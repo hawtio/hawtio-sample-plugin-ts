@@ -2,17 +2,21 @@
   "name": "hawtio-sample-plugin",
   "version": "1.0.0",
   "description": "Hawtio sample plugin",
-  "main": "src/main/ts/sample-plugin.ts",
+  "main": "./src/main/webapp/app/sample-plugin.js",
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
-    "build": "parcel build -d src/main/webapp/app --no-source-maps $npm_package_main"
+    "build": "tsup",
+    "build:watch": "tsup --watch"
   },
   "dependencies": {
-    "@hawtio/core": "^4.13.0"
+    "@hawtio/react": "^0.2.0-dev.4",
+    "@patternfly/react-core": "^4.276.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "parcel": "^1.12.4",
-    "typescript": "^3.9.3"
-  }
+    "tsup": "^6.6.3"
+  },
+  "packageManager": "yarn@3.5.0"
 }

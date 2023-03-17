@@ -1,16 +1,24 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.hawt.examples</groupId>
   <artifactId>hawtio-sample-plugin</artifactId>
-  <version>1.0.0</version>
+  <version>2.0.0</version>
   <name>Hawtio Sample Plugin</name>
   <packaging>war</packaging>
 
   <properties>
-    <spring-boot-version>2.2.6.RELEASE</spring-boot-version>
-    <hawtio-version>2.10.0</hawtio-version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+
+    <!-- Versions -->
+    <spring-boot-version>2.7.9</spring-boot-version>
+    <hawtio-version>3.0-M2</hawtio-version>
+    <frontend-maven-plugin-version>1.12.1</frontend-maven-plugin-version>
   </properties>
 
   <dependencyManagement>
@@ -64,7 +72,7 @@
       <optional>true</optional>
     </dependency>
 
-    <!-- hawtio -->
+    <!-- Hawtio -->
     <dependency>
       <groupId>io.hawt</groupId>
       <artifactId>hawtio-springboot</artifactId>
@@ -73,6 +81,42 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+        <version>${frontend-maven-plugin-version}</version>
+        <executions>
+          <execution>
+            <id>install node and yarn</id>
+            <goals>
+              <goal>install-node-and-yarn</goal>
+            </goals>
+            <configuration>
+              <nodeVersion>v16.15.0</nodeVersion>
+              <yarnVersion>v1.22.19</yarnVersion>
+            </configuration>
+          </execution>
+          <execution>
+            <id>yarn install</id>
+            <goals>
+              <goal>yarn</goal>
+            </goals>
+            <configuration>
+              <arguments>install</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>yarn build</id>
+            <goals>
+              <goal>yarn</goal>
+            </goals>
+            <configuration>
+              <arguments>build</arguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
@@ -97,34 +141,5 @@
       </plugin>
     </plugins>
   </build>
-  <profiles>
-    <profile>
-      <id>java11-plus</id>
-      <activation>
-        <jdk>[11,)</jdk>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>jakarta.xml.bind</groupId>
-          <artifactId>jakarta.xml.bind-api</artifactId>
-          <version>2.3.2</version>
-        </dependency>
-        <dependency>
-          <groupId>com.sun.activation</groupId>
-          <artifactId>javax.activation</artifactId>
-          <version>1.2.0</version>
-        </dependency>
-        <dependency>
-          <groupId>org.springframework.hateoas</groupId>
-          <artifactId>spring-hateoas</artifactId>
-          <version>0.25.0.RELEASE</version>
-        </dependency>
-        <dependency>
-          <groupId>org.springframework.plugin</groupId>
-          <artifactId>spring-plugin-core</artifactId>
-          <version>1.2.0.RELEASE</version>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
+
 </project>
