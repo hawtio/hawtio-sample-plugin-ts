@@ -216,38 +216,41 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hawtio/react@npm:^0.2.0-dev.4":
-  version: 0.2.0-dev.4
-  resolution: "@hawtio/react@npm:0.2.0-dev.4"
+"@hawtio/react@npm:^0.2.0-dev.5":
+  version: 0.2.0-dev.5
+  resolution: "@hawtio/react@npm:0.2.0-dev.5"
   dependencies:
     "@hawtio/camel-model": ^3.20.2-1
-    "@patternfly/react-core": ^4.267.6
-    "@patternfly/react-table": ^4.112.6
+    "@module-federation/utilities": ^1.4.0
+    "@patternfly/react-code-editor": ^4.82.113
+    "@patternfly/react-core": ^4.276.8
+    "@patternfly/react-table": ^4.113.0
     "@testing-library/jest-dom": ^5.16.5
     "@testing-library/react": ^14.0.0
     "@testing-library/user-event": ^14.4.3
-    "@types/jest": ^29.4.4
-    "@types/node": ^18.15.3
-    "@types/react": ^18.0.28
+    "@types/jest": ^29.5.0
+    "@types/node": ^18.15.11
+    "@types/react": ^18.0.31
     "@types/react-dom": ^18.0.11
     "@types/react-router-dom": ^5.3.3
     eventemitter3: ^5.0.0
     jolokia.js: 1.7.2
     jquery: ^3.6.4
     js-logger: ^1.6.1
+    monaco-editor: ^0.36.1
     react: ^18.2.0
     react-dom: ^18.2.0
-    react-markdown: ^8.0.5
-    react-router-dom: ^6.9.0
+    react-markdown: ^8.0.6
+    react-monaco-editor: ^0.52.0
+    react-router-dom: ^6.10.0
     react-split: ^2.0.14
     superstruct: ^1.0.3
     typescript: ^4.9.5
   peerDependencies:
-    "@patternfly/react-core": ^4.267.6
-    "@patternfly/react-table": ^4.112.6
+    "@patternfly/react-core": ^4.276.8
     react: ^16.8 || ^17 || ^18
     react-dom: ^16.8 || ^17 || ^18
-  checksum: f650c807ceabd07369a4993612d3078d58040a61c0e03287e25beff97cf117c8c4836b34b8cb402c9346ccc45f805cb3f125dc872e4fb2a6979d4a85489d355b
+  checksum: 7aac670c3f13eb69cea1b1fa37f67d35866fbc4ce0b853c7af8000eda29735c42bc7649caafbd089ffa195c9fa2d7398fca2ef287cab1196b9f233c10874497a
   languageName: node
   linkType: hard
 
@@ -280,6 +283,25 @@ __metadata:
     "@types/yargs": ^17.0.8
     chalk: ^4.0.0
   checksum: 1811f94b19cf8a9460a289c4f056796cfc373480e0492692a6125a553cd1a63824bd846d7bb78820b7b6f758f6dd3c2d4558293bb676d541b2fa59c70fdf9d39
+  languageName: node
+  linkType: hard
+
+"@module-federation/utilities@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "@module-federation/utilities@npm:1.4.0"
+  peerDependencies:
+    next: ^12 || ^13
+    react: ^16 || ^17 || ^18
+    react-dom: ^16 || ^17 || ^18
+    webpack: ^5.40.0
+  peerDependenciesMeta:
+    next:
+      optional: true
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: aa707a873c0dc208a6bccc34a025b7ea58dbec7bd3f24a29cfd3559bde4de8e6e36cc66e842d2b59f36fe69c7024710304f97da780f67759c5ce9f08a80bb8e2
   languageName: node
   linkType: hard
 
@@ -330,7 +352,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@patternfly/react-core@npm:^4.267.6, @patternfly/react-core@npm:^4.276.6":
+"@patternfly/react-code-editor@npm:^4.82.113":
+  version: 4.82.115
+  resolution: "@patternfly/react-code-editor@npm:4.82.115"
+  dependencies:
+    "@patternfly/react-core": ^4.276.8
+    "@patternfly/react-icons": ^4.93.6
+    "@patternfly/react-styles": ^4.92.6
+    react-dropzone: 9.0.0
+    tslib: ^2.0.0
+  peerDependencies:
+    react: ^16.8 || ^17 || ^18
+    react-dom: ^16.8 || ^17 || ^18
+    react-monaco-editor: ^0.51.0
+  checksum: ed7ea6742106e3f912e129c205c15346d0831631a1da3e84d74ce052de86ae4fc1775bd6b8312229866ceb2e4fbd852adc787b218bf95b6610e509a3732b7ad2
+  languageName: node
+  linkType: hard
+
+"@patternfly/react-core@npm:^4.276.6":
   version: 4.276.6
   resolution: "@patternfly/react-core@npm:4.276.6"
   dependencies:
@@ -345,6 +384,24 @@ __metadata:
     react: ^16.8 || ^17 || ^18
     react-dom: ^16.8 || ^17 || ^18
   checksum: 7410064a0f5944ef3eafadf565d2f72b9a64e91a44f94bca74e3dc1bd8ab1901a3d40143d851d5254fd3b81ee879dac162fb8493dd66054f1fcd721e4a2bb8d6
+  languageName: node
+  linkType: hard
+
+"@patternfly/react-core@npm:^4.276.8":
+  version: 4.276.8
+  resolution: "@patternfly/react-core@npm:4.276.8"
+  dependencies:
+    "@patternfly/react-icons": ^4.93.6
+    "@patternfly/react-styles": ^4.92.6
+    "@patternfly/react-tokens": ^4.94.6
+    focus-trap: 6.9.2
+    react-dropzone: 9.0.0
+    tippy.js: 5.1.2
+    tslib: ^2.0.0
+  peerDependencies:
+    react: ^16.8 || ^17 || ^18
+    react-dom: ^16.8 || ^17 || ^18
+  checksum: e17806345aa9972867e8a9854cb3067ac7f9b06006bfd833b4ba3d3c71c2f8c76765b30b5511c3a214a254dc5c41ac53c6040ced726c65fcc3b0e0ec162051f7
   languageName: node
   linkType: hard
 
@@ -365,11 +422,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@patternfly/react-table@npm:^4.112.6":
-  version: 4.112.39
-  resolution: "@patternfly/react-table@npm:4.112.39"
+"@patternfly/react-table@npm:^4.113.0":
+  version: 4.113.0
+  resolution: "@patternfly/react-table@npm:4.113.0"
   dependencies:
-    "@patternfly/react-core": ^4.276.6
+    "@patternfly/react-core": ^4.276.8
     "@patternfly/react-icons": ^4.93.6
     "@patternfly/react-styles": ^4.92.6
     "@patternfly/react-tokens": ^4.94.6
@@ -378,7 +435,7 @@ __metadata:
   peerDependencies:
     react: ^16.8 || ^17 || ^18
     react-dom: ^16.8 || ^17 || ^18
-  checksum: 4ca24914f95b7d6caada94dd7871d218cb6d1e72b70ec49ba0c53c6a4297bb4c2a810d4803ea4e18605b6042fb0a46da1d282212ef70e31011d2980a1fbfc5eb
+  checksum: 18bb3e0ac225e38d1bc31af40703027f25fcc66b43e163af07306a97a8911c696c7bbeb3c3fed6aea900c959c2256cc4c28674f5d85963d43e268b035ae400fa
   languageName: node
   linkType: hard
 
@@ -389,10 +446,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@remix-run/router@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@remix-run/router@npm:1.4.0"
-  checksum: 707dce35a2b8138005cf19e63f6fd3c4da05b4b892e9e9118e8b727c3b95953efe27307ca2df35084044df30fa1fc367cf0bbc98d1ded9020c82e61e6242caaf
+"@remix-run/router@npm:1.5.0":
+  version: 1.5.0
+  resolution: "@remix-run/router@npm:1.5.0"
+  checksum: 9c510c174af1553edd1f039ba16e7e3d34e04d53b3bac18814660e31cd0c48297ea4291ff86d0736b560123ebc63ecb62fa525829181d16a8dad15270d6672d7
   languageName: node
   linkType: hard
 
@@ -533,7 +590,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:^29.4.4":
+"@types/jest@npm:^29.5.0":
   version: 29.5.0
   resolution: "@types/jest@npm:29.5.0"
   dependencies:
@@ -568,10 +625,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^18.15.3":
+"@types/node@npm:*":
   version: 18.15.3
   resolution: "@types/node@npm:18.15.3"
   checksum: 31b1d92475a82c30de29aa6c0771b18a276552d191283b4423ba2d61b3f01159bf0d02576c0b7cc834b043997893800db6bb47f246083ed85aa45e79c80875d7
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^18.15.11":
+  version: 18.15.11
+  resolution: "@types/node@npm:18.15.11"
+  checksum: 977b4ad04708897ff0eb049ecf82246d210939c82461922d20f7d2dcfd81bbc661582ba3af28869210f7e8b1934529dcd46bff7d448551400f9d48b9d3bddec3
   languageName: node
   linkType: hard
 
@@ -612,7 +676,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:^18.0.28":
+"@types/react@npm:*":
   version: 18.0.28
   resolution: "@types/react@npm:18.0.28"
   dependencies:
@@ -620,6 +684,17 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: e752df961105e5127652460504785897ca6e77259e0da8f233f694f9e8f451cde7fa0709d4456ade0ff600c8ce909cfe29f9b08b9c247fa9b734e126ec53edd7
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:^18.0.31":
+  version: 18.0.32
+  resolution: "@types/react@npm:18.0.32"
+  dependencies:
+    "@types/prop-types": "*"
+    "@types/scheduler": "*"
+    csstype: ^3.0.2
+  checksum: c8dbce83c455e520e75f3649988f46100e3a3c0bf7241281ea5bd9067a0368290f0d7c6102e12e6ec9d649134b29a3ef4c421f376ec5aa06ed78cbdd8c144b4c
   languageName: node
   linkType: hard
 
@@ -1692,7 +1767,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "hawtio-sample-plugin@workspace:."
   dependencies:
-    "@hawtio/react": ^0.2.0-dev.4
+    "@hawtio/react": ^0.2.0-dev.5
     "@patternfly/react-core": ^4.276.6
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -2686,6 +2761,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"monaco-editor@npm:^0.36.1":
+  version: 0.36.1
+  resolution: "monaco-editor@npm:0.36.1"
+  checksum: 75e7cfbe03b4cb964e550c8021d6b2cc4f5265ee17703ddda7a63a26492a95fdbfaf34aa3e50004930ff8afb1422ae2b1dc0b9d3f122d558bdf1a335403937fd
+  languageName: node
+  linkType: hard
+
 "mri@npm:^1.1.0":
   version: 1.2.0
   resolution: "mri@npm:1.2.0"
@@ -2965,7 +3047,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.0.0, prop-types@npm:^15.5.7, prop-types@npm:^15.6.2":
+"prop-types@npm:^15.0.0, prop-types@npm:^15.5.7, prop-types@npm:^15.6.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -3044,9 +3126,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-markdown@npm:^8.0.5":
-  version: 8.0.5
-  resolution: "react-markdown@npm:8.0.5"
+"react-markdown@npm:^8.0.6":
+  version: 8.0.6
+  resolution: "react-markdown@npm:8.0.6"
   dependencies:
     "@types/hast": ^2.0.0
     "@types/prop-types": ^15.0.0
@@ -3066,31 +3148,44 @@ __metadata:
   peerDependencies:
     "@types/react": ">=16"
     react: ">=16"
-  checksum: 9d11b7aba16216d590e56b4744e05d2925141bfb0f5885b3d9400ccf006cd24b79ce3b3d20af8a083a01324215b58fa4c5979e44f69d54123ff1dd5dacb0dc89
+  checksum: 59fd5dcd089df0cd9098755e3063d8fcf4b4635b1ac2d5e05fcda9923769724476396abdf2afb80fb8e7589a951deac50d6f89c4740d5ec6decd34076122c80c
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^6.9.0":
-  version: 6.9.0
-  resolution: "react-router-dom@npm:6.9.0"
+"react-monaco-editor@npm:^0.52.0":
+  version: 0.52.0
+  resolution: "react-monaco-editor@npm:0.52.0"
   dependencies:
-    "@remix-run/router": 1.4.0
-    react-router: 6.9.0
+    prop-types: ^15.8.1
+  peerDependencies:
+    "@types/react": ">=16 <= 18"
+    monaco-editor: ^0.36.1
+    react: ">=16 <= 18"
+  checksum: ad880a432cca52d0e4cc05bc4249c88280cf5d6d6e902f14b6e8513cd909ec012fe6cc9c7483efedad8a3f3137f4da2c81d9ab334b17aa14369db7b6564f699f
+  languageName: node
+  linkType: hard
+
+"react-router-dom@npm:^6.10.0":
+  version: 6.10.0
+  resolution: "react-router-dom@npm:6.10.0"
+  dependencies:
+    "@remix-run/router": 1.5.0
+    react-router: 6.10.0
   peerDependencies:
     react: ">=16.8"
     react-dom: ">=16.8"
-  checksum: 4d593491ab8db5611feda70002c62902baebb84d5c1c5e5b6172496f31f91130deee132bf4240dea634a88cb86c76d6da348f15b9cd5e5197be455efd88edf72
+  checksum: d048d8cc66e5aec782bd675097d6bf0e5f867f3f0539bff9acdc4a314b5e0e34093944762960ca0977a54c6255272edd262231242b18c4e260d68df6b5288464
   languageName: node
   linkType: hard
 
-"react-router@npm:6.9.0":
-  version: 6.9.0
-  resolution: "react-router@npm:6.9.0"
+"react-router@npm:6.10.0":
+  version: 6.10.0
+  resolution: "react-router@npm:6.10.0"
   dependencies:
-    "@remix-run/router": 1.4.0
+    "@remix-run/router": 1.5.0
   peerDependencies:
     react: ">=16.8"
-  checksum: b2a5f42e042bee7a7f116ca7817b0e58359e5353d84887c9fe7a633d7490c03b1e0ae37cd01830c2a381e3d1e7d501bb4751e53cc3d491e25f36582d3f6e0546
+  checksum: c9fce46147c04257d7d6fa1f5bbfac96c5fdd0b15f26918bd12b2e5fe9143977c5a4452272f9b85795a22e29ec105a60d0bbe036118efc52b383d163cd8829ab
   languageName: node
   linkType: hard
 

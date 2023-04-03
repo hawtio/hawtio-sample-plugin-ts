@@ -1,14 +1,39 @@
 "use strict";
 
-// src/main/ts/simple/index.ts
+// src/main/ts/custom-tree/index.ts
 var import_react2 = require("@hawtio/react");
 
-// src/main/ts/simple/globals.ts
+// src/main/ts/custom-tree/CustomTree.tsx
+var CustomTree = () => null;
+
+// src/main/ts/custom-tree/globals.ts
 var import_react = require("@hawtio/react");
-var pluginName = "simple-plugin";
-var pluginTitle = "Simple Plugin";
-var pluginPath = "/simple-plugin";
+var pluginName = "custom-tree";
+var pluginTitle = "Custom Tree";
+var pluginPath = "/custom-tree";
 var log = import_react.Logger.get(pluginName);
+
+// src/main/ts/custom-tree/index.ts
+var registerCustomTreePlugin = () => {
+  log.info("Loading", pluginName);
+  import_react2.hawtio.addPlugin({
+    id: pluginName,
+    title: pluginTitle,
+    path: pluginPath,
+    component: CustomTree,
+    isActive: () => Promise.resolve(true)
+  });
+};
+
+// src/main/ts/simple/index.ts
+var import_react4 = require("@hawtio/react");
+
+// src/main/ts/simple/globals.ts
+var import_react3 = require("@hawtio/react");
+var pluginName2 = "simple-plugin";
+var pluginTitle2 = "Simple Plugin";
+var pluginPath2 = "/simple-plugin";
+var log2 = import_react3.Logger.get(pluginName2);
 
 // src/main/ts/simple/help.md
 var help_default = "# Spring Boot Sample plugin\n\nHelp documentation for Spring Boot Sample plugin.\n";
@@ -36,17 +61,18 @@ var SimplePreferences = () => /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(impor
 
 // src/main/ts/simple/index.ts
 var registerSimplePlugin = () => {
-  log.info("Loading", pluginName);
-  import_react2.hawtio.addPlugin({
-    id: pluginName,
-    title: pluginTitle,
-    path: pluginPath,
+  log2.info("Loading", pluginName2);
+  import_react4.hawtio.addPlugin({
+    id: pluginName2,
+    title: pluginTitle2,
+    path: pluginPath2,
     component: SimplePlugin,
     isActive: () => Promise.resolve(true)
   });
-  import_react2.helpRegistry.add(pluginName, pluginTitle, help_default, 100);
-  import_react2.preferencesRegistry.add(pluginName, pluginTitle, SimplePreferences, 100);
+  import_react4.helpRegistry.add(pluginName2, pluginTitle2, help_default, 100);
+  import_react4.preferencesRegistry.add(pluginName2, pluginTitle2, SimplePreferences, 100);
 };
 
 // src/main/ts/index.ts
 registerSimplePlugin();
+registerCustomTreePlugin();

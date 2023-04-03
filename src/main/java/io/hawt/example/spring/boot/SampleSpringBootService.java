@@ -15,9 +15,9 @@ public class SampleSpringBootService {
 
     @Bean
     public HawtioPlugin samplePlugin() {
-        return new HawtioPlugin("sample-plugin",
-                "plugins",
-                "",
-                new String[] { "sample-plugin.js" });
+        return new HawtioPlugin(
+            "http://localhost:3000",
+            "samplePlugin",
+            "./plugin");
     }
 }
