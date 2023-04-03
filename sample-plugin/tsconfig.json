@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "target": "es2015",
+    "target": "es5",
     "lib": [
       "dom",
       "dom.iterable",
@@ -24,6 +24,6 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src/main/ts"
+    "src"
   ]
 }

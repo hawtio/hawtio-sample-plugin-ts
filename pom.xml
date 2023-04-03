@@ -8,7 +8,6 @@
   <artifactId>hawtio-sample-plugin</artifactId>
   <version>2.0.0</version>
   <name>Hawtio Sample Plugin</name>
-  <packaging>war</packaging>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -17,8 +16,11 @@
 
     <!-- Versions -->
     <spring-boot-version>2.7.9</spring-boot-version>
-    <hawtio-version>3.0-M2</hawtio-version>
+    <hawtio-version>3.0-SNAPSHOT</hawtio-version>
     <frontend-maven-plugin-version>1.12.1</frontend-maven-plugin-version>
+
+    <!-- Path to Hawtio plugin -->
+    <plugin.path>sample-plugin</plugin.path>
   </properties>
 
   <dependencyManagement>
@@ -80,11 +82,26 @@
   </dependencies>
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+      <!-- Add the plugin build to Spring Boot's static resources -->
+      <resource>
+        <directory>${plugin.path}/build</directory>
+        <targetPath>static</targetPath>
+      </resource>
+    </resources>
+
     <plugins>
+      <!-- Build the plugin TypeScript subproject from Maven -->
       <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
         <version>${frontend-maven-plugin-version}</version>
+        <configuration>
+          <workingDirectory>${plugin.path}</workingDirectory>
+        </configuration>
         <executions>
           <execution>
             <id>install node and yarn</id>
@@ -132,11 +149,28 @@
           </execution>
         </executions>
       </plugin>
+
+      <!-- Clean up the plugin's 'build/' and 'node_modules/' directories as well -->
       <plugin>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>3.2.3</version>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>3.2.0</version>
         <configuration>
-          <failOnMissingWebXml>false</failOnMissingWebXml>
+          <filesets>
+            <fileset>
+              <directory>${basedir}/${plugin.path}/build</directory>
+              <includes>
+                <include>**/*</include>
+              </includes>
+              <followSymlinks>false</followSymlinks>
+            </fileset>
+            <fileset>
+              <directory>${basedir}/${plugin.path}/node_modules</directory>
+              <includes>
+                <include>**/*</include>
+              </includes>
+              <followSymlinks>false</followSymlinks>
+            </fileset>
+          </filesets>
         </configuration>
       </plugin>
     </plugins>
