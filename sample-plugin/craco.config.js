@@ -6,8 +6,10 @@ module.exports = {
     plugins: {
       add: [
         new ModuleFederationPlugin({
+          // The container name corresponds to 'scope' passed to HawtioPlugin
           name: 'samplePlugin',
           filename: 'remoteEntry.js',
+          // The key in exposes corresponds to 'remote' passed to HawtioPlugin
           exposes: {
             './plugin': './src/sample-plugin',
           },
