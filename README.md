@@ -1,6 +1,6 @@
 # Hawtio Sample Plugin
 
-This sample demonstrates how to write and use a custom plugin [Hawtio v3](https://github.com/hawtio/hawtio) in a Spring Boot application.
+This sample demonstrates how to write and use a custom plugin with [Hawtio v3](https://github.com/hawtio/hawtio) in a Spring Boot application.
 
 ## Key components
 
