@@ -1,8 +1,9 @@
-import { HawtioPlugin, hawtio, helpRegistry, preferencesRegistry } from '@hawtio/react'
+import { HawtioPlugin, hawtio, helpRegistry, preferencesRegistry, workspace } from '@hawtio/react'
 import { CustomTree } from './CustomTree'
 import { CustomTreePreferences } from './CustomTreePreferences'
 import { log, pluginName, pluginPath, pluginTitle } from './globals'
 import help from './help.md'
+import { preferencesService } from './preferences-service'
 
 export const customTree: HawtioPlugin = () => {
   log.info('Loading', pluginName)
@@ -12,7 +13,11 @@ export const customTree: HawtioPlugin = () => {
     title: pluginTitle,
     path: pluginPath,
     component: CustomTree,
-    isActive: async () => true,
+    isActive: () => {
+      // You can enable the plugin only when a specific domain is present in the workspace
+      const domain = preferencesService.loadDomain()
+      return workspace.treeContainsDomainAndProperties(domain)
+    },
   })
 
   helpRegistry.add(pluginName, pluginTitle, help, 102)

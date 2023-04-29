@@ -14,7 +14,7 @@ import { simple } from './simple'
  * plugin.setPluginEntry("registerMyPlugin");
  * </code>
  *
- * @see src/main/java/io/hawt/examples/sampleplugin/PluginContextListener.java
+ * @see src/main/java/io/hawt/example/spring/boot/SampleSpringBootService.java
  */
 export const plugin: HawtioPlugin = () => {
   simple()

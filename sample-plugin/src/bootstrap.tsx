@@ -1,16 +1,20 @@
+import { hawtio, Hawtio, registerPlugins } from '@hawtio/react'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { plugin } from './sample-plugin'
 
-const App = () => (
-  <div>
-    <h1>Sample Plugin</h1>
-    <p>This is a Hawtio plugin example.</p>
-  </div>
-)
+// Register builtin plugins
+registerPlugins()
+
+// Register the plugin under development
+plugin()
+
+// Bootstrap Hawtio
+hawtio.bootstrap()
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
-    <App />
+    <Hawtio />
   </React.StrictMode>,
 )

@@ -1,4 +1,4 @@
-import { PageSection, PageSectionVariants, Text, TextContent } from '@patternfly/react-core'
+import { PageSection, Text, TextContent } from '@patternfly/react-core'
 import React from 'react'
 
 export const SimplePlugin: React.FunctionComponent = () => (
