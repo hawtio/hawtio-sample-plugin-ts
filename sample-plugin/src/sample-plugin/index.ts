@@ -1,4 +1,4 @@
-import { HawtioPlugin } from '@hawtio/react'
+import { HawtioPlugin, configManager } from '@hawtio/react'
 import { customTree } from './custom-tree'
 import { simple } from './simple'
 
@@ -20,3 +20,7 @@ export const plugin: HawtioPlugin = () => {
   simple()
   customTree()
 }
+
+// Register the custom plugin version to Hawtio
+// See package.json "replace-version" script for how to replace the version placeholder with a real version
+configManager.addProductInfo('Hawtio Sample Plugin', '__PACKAGE_VERSION_PLACEHOLDER__')

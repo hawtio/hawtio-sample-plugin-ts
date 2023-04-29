@@ -7,8 +7,9 @@
   "private": true,
   "scripts": {
     "start": "craco start",
-    "build": "craco build",
-    "test": "craco test"
+    "build": "craco build && yarn replace-version",
+    "test": "craco test",
+    "replace-version": "replace __PACKAGE_VERSION_PLACEHOLDER__ $npm_package_version ./build/static/js -r --include=\"*.js\""
   },
   "dependencies": {
     "@hawtio/react": "^0.2.0",
@@ -19,7 +20,8 @@
   },
   "devDependencies": {
     "@craco/craco": "^7.1.0",
-    "@hawtio/backend-middleware": "^1.0.3"
+    "@hawtio/backend-middleware": "^1.0.3",
+    "replace": "^1.2.2"
   },
   "eslintConfig": {
     "extends": [
