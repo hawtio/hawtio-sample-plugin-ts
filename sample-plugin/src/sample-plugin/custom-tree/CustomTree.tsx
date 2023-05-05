@@ -1,9 +1,21 @@
 import { AttributeValues, jolokiaService } from '@hawtio/react'
-import { ChartDonutThreshold, ChartDonutUtilization, ChartPie } from '@patternfly/react-charts'
+import {
+  ChartArea,
+  ChartContainer,
+  ChartDonutThreshold,
+  ChartDonutUtilization,
+  ChartGroup,
+  ChartLabel,
+  ChartVoronoiContainer,
+} from '@patternfly/react-charts'
 import {
   Card,
   CardBody,
   CardTitle,
+  DescriptionList,
+  DescriptionListDescription,
+  DescriptionListGroup,
+  DescriptionListTerm,
   EmptyState,
   EmptyStateIcon,
   PageGroup,
@@ -112,6 +124,10 @@ const CustomTreeContent: React.FunctionComponent = () => {
   )
 }
 
+function toMB(n: number) {
+  return (n / (1000 * 1000)).toFixed(2)
+}
+
 type MemoryUsage = {
   init: number
   used: number
@@ -137,22 +153,22 @@ const MemoryView: React.FunctionComponent = () => {
     const setAttributes = (attrs: AttributeValues) => {
       setHeap(attrs['HeapMemoryUsage'] as MemoryUsage)
       setNonHeap(attrs['NonHeapMemoryUsage'] as MemoryUsage)
-      setIsReading(false)
     }
 
     const readAttributes = async () => {
       const attrs = await jolokiaService.readAttributes(mbean)
       setAttributes(attrs)
+      setIsReading(false)
     }
     readAttributes()
 
     let handle: number | null = null
     const register = async (request: IRequest, callback: IResponseFn) => {
       handle = await jolokiaService.register(request, callback)
-      log.debug('Register request: handle =', handle)
+      log.debug(selectedNode.name, '- Register request: handle =', handle)
     }
     register({ type: 'read', mbean, attribute: ['HeapMemoryUsage', 'NonHeapMemoryUsage'] }, (response: IResponse) => {
-      log.debug('Scheduler - Attributes:', response.value)
+      log.debug(selectedNode.name, '- Scheduler - Attributes:', response.value)
       const attrs = response.value as AttributeValues
       setAttributes(attrs)
     })
@@ -176,40 +192,6 @@ const MemoryView: React.FunctionComponent = () => {
     )
   }
 
-  type MemoryPieProps = {
-    title: string
-    data: { x: string; y: number }[]
-    legendData: { name: string }[]
-  }
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const MemoryPie = ({ title, data, legendData }: MemoryPieProps) => (
-    <Card isPlain>
-      <CardTitle>{title}</CardTitle>
-      <CardBody>
-        <div style={{ height: '230px', width: '350px' }}>
-          <ChartPie
-            constrainToVisibleArea
-            data={data}
-            height={230}
-            labels={({ datum }) => `${datum.x}: ${datum.y}`}
-            legendData={legendData}
-            legendOrientation='vertical'
-            legendPosition='right'
-            name={title}
-            padding={{
-              bottom: 20,
-              left: 20,
-              right: 140, // Adjusted to accommodate legend
-              top: 20,
-            }}
-            width={350}
-          />
-        </div>
-      </CardBody>
-    </Card>
-  )
-
-  const toMB = (n: number) => (n / (1000 * 1000)).toFixed(2)
   type MemoryUtilizationProps = {
     title: string
     data: MemoryUsage
@@ -274,21 +256,147 @@ const MemoryView: React.FunctionComponent = () => {
   )
 }
 
+type CpuLoadHistory = {
+  process: number
+  system: number
+}[]
+
+const cpuLoadHistorySize = 50
+const initialCpuLoadHistory = Array(cpuLoadHistorySize)
+  .fill(0)
+  .map(_ => ({ process: 0, system: 0 }))
+
 const OSView: React.FunctionComponent = () => {
   const { selectedNode } = useContext(CustomTreeContext)
+  const [isReading, setIsReading] = useState(true)
+  const [systemInfo, setSystemInfo] = useState<Record<string, string>>({})
+  const [cpuLoadHistory, setCpuLoadHistory] = useState<CpuLoadHistory>(initialCpuLoadHistory)
+
+  useEffect(() => {
+    if (!selectedNode || selectedNode.name !== 'OperatingSystem' || !selectedNode.mbean) {
+      return
+    }
+
+    const { mbean } = selectedNode
+
+    const updateCpuLoads = (attrs: AttributeValues) => {
+      const process = attrs['ProcessCpuLoad'] as number
+      const system = attrs['SystemCpuLoad'] as number
+      // cpuLoadHistory is a FIFO queue
+      setCpuLoadHistory(value => [...value.slice(1), { process, system }])
+    }
+
+    const readAttributes = async () => {
+      const attrs = await jolokiaService.readAttributes(mbean)
+      setSystemInfo({
+        OS: attrs['Name'] as string,
+        Architecture: attrs['Arch'] as string,
+        'Number of processors': attrs['AvailableProcessors'] as string,
+        Memory: `${toMB(attrs['TotalPhysicalMemorySize'] as number)} MB`,
+      })
+      updateCpuLoads(attrs)
+      setIsReading(false)
+    }
+    readAttributes()
+
+    let handle: number | null = null
+    const register = async (request: IRequest, callback: IResponseFn) => {
+      handle = await jolokiaService.register(request, callback)
+      log.debug(selectedNode.name, '- Register request: handle =', handle)
+    }
+    register(
+      {
+        type: 'read',
+        mbean,
+        attribute: ['ProcessCpuLoad', 'SystemCpuLoad'],
+      },
+      (response: IResponse) => {
+        log.debug(selectedNode.name, '- Scheduler - Attributes:', response.value)
+        const attrs = response.value as AttributeValues
+        updateCpuLoads(attrs)
+      },
+    )
+
+    return () => {
+      handle && jolokiaService.unregister(handle)
+    }
+  }, [selectedNode])
 
   if (!selectedNode || selectedNode.name !== 'OperatingSystem') {
     return null
   }
 
-  const Processor = () => {
-    return <Card isPlain></Card>
+  if (isReading) {
+    return (
+      <Card isPlain>
+        <CardBody>
+          <Text component='p'>Reading attributes...</Text>
+        </CardBody>
+      </Card>
+    )
+  }
+
+  const SystemInfo = ({ info }: { info: Record<string, string> }) => {
+    return (
+      <Card isPlain>
+        <CardTitle>System info</CardTitle>
+        <CardBody>
+          <DescriptionList columnModifier={{ default: '3Col' }}>
+            {Object.entries(info).map(([key, value], index) => (
+              <DescriptionListGroup key={`system-info-${index}`}>
+                <DescriptionListTerm>{key}</DescriptionListTerm>
+                <DescriptionListDescription>{value}</DescriptionListDescription>
+              </DescriptionListGroup>
+            ))}
+          </DescriptionList>
+        </CardBody>
+      </Card>
+    )
+  }
+
+  const CpuSparkline = ({ title, color, data }: { title: string; color: string; data: unknown[] }) => {
+    return (
+      <div style={{ marginLeft: '50px', marginTop: '50px', height: '135px' }}>
+        <div style={{ height: '100px', width: '400px' }}>
+          <ChartGroup
+            containerComponent={
+              <ChartVoronoiContainer labels={({ datum }) => `${datum.name}: ${datum.y}`} constrainToVisibleArea />
+            }
+            height={100}
+            maxDomain={{ y: 1 }}
+            name={title}
+            padding={0}
+            themeColor={color}
+            width={400}
+          >
+            <ChartArea data={data} />
+          </ChartGroup>
+        </div>
+        <ChartContainer title={title}>
+          <ChartLabel text={title} dy={15} />
+        </ChartContainer>
+      </div>
+    )
+  }
+
+  const CpuUsage = ({ history }: { history: CpuLoadHistory }) => {
+    const processData = history.map((item, index) => ({ name: 'process', x: index, y: item.process }))
+    const systemData = history.map((item, index) => ({ name: 'system', x: index, y: item.system }))
+    return (
+      <Card isPlain>
+        <CardTitle>CPU usage</CardTitle>
+        <CardBody>
+          <CpuSparkline title='Process CPU Load' color='blue' data={processData} />
+          <CpuSparkline title='System CPU Load' color='green' data={systemData} />
+        </CardBody>
+      </Card>
+    )
   }
 
   return (
     <React.Fragment>
-      <Processor />
-      <Processor />
+      <SystemInfo info={systemInfo} />
+      <CpuUsage history={cpuLoadHistory} />
     </React.Fragment>
   )
 }

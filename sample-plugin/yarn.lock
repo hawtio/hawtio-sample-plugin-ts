@@ -7842,6 +7842,8 @@ __metadata:
     "@hawtio/backend-middleware": ^1.0.3
     "@hawtio/react": ^0.2.0
     "@patternfly/react-charts": ^6.94.19
+    "@patternfly/react-core": ^4.276.8
+    "@patternfly/react-table": ^4.113.0
     react: ^18.2.0
     react-dom: ^18.2.0
     react-scripts: ^5.0.1
