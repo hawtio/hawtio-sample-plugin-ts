@@ -1,11 +1,14 @@
 import { AttributeValues, jolokiaService } from '@hawtio/react'
 import {
+  Chart,
   ChartArea,
+  ChartAxis,
   ChartContainer,
   ChartDonutThreshold,
   ChartDonutUtilization,
   ChartGroup,
   ChartLabel,
+  ChartLine,
   ChartVoronoiContainer,
 } from '@patternfly/react-charts'
 import {
@@ -262,7 +265,7 @@ type CpuLoadHistory = {
 }[]
 
 const cpuLoadHistorySize = 50
-const initialCpuLoadHistory = Array(cpuLoadHistorySize)
+const initialCpuLoadHistory: CpuLoadHistory = Array(cpuLoadHistorySize)
   .fill(0)
   .map(_ => ({ process: 0, system: 0 }))
 
@@ -270,7 +273,7 @@ const OSView: React.FunctionComponent = () => {
   const { selectedNode } = useContext(CustomTreeContext)
   const [isReading, setIsReading] = useState(true)
   const [systemInfo, setSystemInfo] = useState<Record<string, string>>({})
-  const [cpuLoadHistory, setCpuLoadHistory] = useState<CpuLoadHistory>(initialCpuLoadHistory)
+  const [cpuLoadHistory, setCpuLoadHistory] = useState(initialCpuLoadHistory)
 
   useEffect(() => {
     if (!selectedNode || selectedNode.name !== 'OperatingSystem' || !selectedNode.mbean) {
@@ -279,11 +282,11 @@ const OSView: React.FunctionComponent = () => {
 
     const { mbean } = selectedNode
 
-    const updateCpuLoads = (attrs: AttributeValues) => {
+    const updateHistory = (attrs: AttributeValues) => {
       const process = attrs['ProcessCpuLoad'] as number
       const system = attrs['SystemCpuLoad'] as number
-      // cpuLoadHistory is a FIFO queue
-      setCpuLoadHistory(value => [...value.slice(1), { process, system }])
+      // history is a FIFO queue
+      setCpuLoadHistory(history => [...history.slice(1), { process, system }])
     }
 
     const readAttributes = async () => {
@@ -294,7 +297,7 @@ const OSView: React.FunctionComponent = () => {
         'Number of processors': attrs['AvailableProcessors'] as string,
         Memory: `${toMB(attrs['TotalPhysicalMemorySize'] as number)} MB`,
       })
-      updateCpuLoads(attrs)
+      updateHistory(attrs)
       setIsReading(false)
     }
     readAttributes()
@@ -313,7 +316,7 @@ const OSView: React.FunctionComponent = () => {
       (response: IResponse) => {
         log.debug(selectedNode.name, '- Scheduler - Attributes:', response.value)
         const attrs = response.value as AttributeValues
-        updateCpuLoads(attrs)
+        updateHistory(attrs)
       },
     )
 
@@ -322,18 +325,12 @@ const OSView: React.FunctionComponent = () => {
     }
   }, [selectedNode])
 
-  if (!selectedNode || selectedNode.name !== 'OperatingSystem') {
+  if (!selectedNode || selectedNode.name !== 'OperatingSystem' || !selectedNode.mbean) {
     return null
   }
 
   if (isReading) {
-    return (
-      <Card isPlain>
-        <CardBody>
-          <Text component='p'>Reading attributes...</Text>
-        </CardBody>
-      </Card>
-    )
+    return <ReadingCard />
   }
 
   const SystemInfo = ({ info }: { info: Record<string, string> }) => {
@@ -401,21 +398,144 @@ const OSView: React.FunctionComponent = () => {
   )
 }
 
+type ThreadsHistory = {
+  total: number
+  peak: number
+  thread: number
+  daemon: number
+}[]
+
+const threadsHistorySize = 50
+const initialThreadsHistory: ThreadsHistory = Array(threadsHistorySize)
+  .fill(0)
+  .map(_ => ({
+    total: 0,
+    peak: 0,
+    thread: 0,
+    daemon: 0,
+  }))
+
 const ThreadsView: React.FunctionComponent = () => {
   const { selectedNode } = useContext(CustomTreeContext)
+  const [isReading, setIsReading] = useState(true)
+  const [threadsHistory, setThreadsHistory] = useState(initialThreadsHistory)
 
-  if (!selectedNode || selectedNode.name !== 'Threading') {
+  useEffect(() => {
+    if (!selectedNode || selectedNode.name !== 'Threading' || !selectedNode.mbean) {
+      return
+    }
+
+    const { mbean } = selectedNode
+
+    const updateHistory = (attrs: AttributeValues) => {
+      const total = attrs['TotalStartedThreadCount'] as number
+      const peak = attrs['PeakThreadCount'] as number
+      const thread = attrs['ThreadCount'] as number
+      const daemon = attrs['DaemonThreadCount'] as number
+      // history is a FIFO queue
+      setThreadsHistory(history => [...history.slice(1), { total, peak, thread, daemon }])
+    }
+
+    const readAttributes = async () => {
+      const attrs = await jolokiaService.readAttributes(mbean)
+      updateHistory(attrs)
+      setIsReading(false)
+    }
+    readAttributes()
+
+    let handle: number | null = null
+    const register = async (request: IRequest, callback: IResponseFn) => {
+      handle = await jolokiaService.register(request, callback)
+      log.debug(selectedNode.name, '- Register request: handle =', handle)
+    }
+    register(
+      {
+        type: 'read',
+        mbean,
+        attribute: ['TotalStartedThreadCount', 'PeakThreadCount', 'ThreadCount', 'DaemonThreadCount'],
+      },
+      (response: IResponse) => {
+        log.debug(selectedNode.name, '- Scheduler - Attributes:', response.value)
+        const attrs = response.value as AttributeValues
+        updateHistory(attrs)
+      },
+    )
+
+    return () => {
+      handle && jolokiaService.unregister(handle)
+    }
+  }, [selectedNode])
+
+  if (!selectedNode || selectedNode.name !== 'Threading' || !selectedNode.mbean) {
     return null
   }
 
-  const Threads = () => {
-    return <Card isPlain></Card>
+  if (isReading) {
+    return <ReadingCard />
+  }
+
+  const Threads = ({ history }: { history: ThreadsHistory }) => {
+    const threadTypes = ['Total started thread', 'Peak thread', 'Thread', 'Daemon thread']
+    const legendData = threadTypes.map(type => ({ name: type }))
+    const dataSet = [
+      history.map(item => ({ name: threadTypes[0], y: item.total })),
+      history.map(item => ({ name: threadTypes[1], y: item.peak })),
+      history.map(item => ({ name: threadTypes[2], y: item.thread })),
+      history.map(item => ({ name: threadTypes[3], y: item.daemon })),
+    ]
+    const max = history.reduce((max, item) => Math.max(item.total, max), 10)
+    const yAxisTickValues = Array(max)
+      .fill(0)
+      .map((_, i) => i)
+      .filter(n => n % 5 === 0)
+    return (
+      <Card isPlain>
+        <CardTitle>Threads</CardTitle>
+        <CardBody>
+          <div style={{ height: '250px', width: '600px' }}>
+            <Chart
+              containerComponent={
+                <ChartVoronoiContainer labels={({ datum }) => `${datum.name}: ${datum.y}`} constrainToVisibleArea />
+              }
+              legendData={legendData}
+              legendOrientation='vertical'
+              legendPosition='right'
+              height={250}
+              maxDomain={{ y: max }}
+              minDomain={{ y: 0 }}
+              name='threads'
+              padding={{
+                bottom: 50,
+                left: 50,
+                right: 250, // Adjusted to accommodate legend
+                top: 50,
+              }}
+              width={600}
+            >
+              <ChartAxis dependentAxis showGrid tickValues={yAxisTickValues} />
+              <ChartGroup>
+                {dataSet.map((data, index) => (
+                  <ChartLine key={`data-${index}`} data={data} />
+                ))}
+              </ChartGroup>
+            </Chart>
+          </div>
+        </CardBody>
+      </Card>
+    )
   }
 
   return (
     <React.Fragment>
-      <Threads />
-      <Threads />
+      <Threads history={threadsHistory} />
     </React.Fragment>
   )
 }
+
+const ReadingCard: React.FunctionComponent = () => (
+  <Card isPlain>
+    <CardBody>
+      <Text component='p'>Reading attributes...</Text>
+    </CardBody>
+  </Card>
+)
