@@ -38,3 +38,30 @@ mvn spring-boot:run -Dskip.yarn
 ```
 
 You can access the Hawtio console with the sample plugin at: <http://localhost:8080/hawtio/>
+
+## Faster plugin development
+
+You could run `mvn install` or `mvn spring-boot:run` every time to incrementally develop the `sample-plugin` frontend project while checking its behaviour in the browser. But this is not suitable for running the fast development feedback cycle.
+
+As shown below, a faster development cycle can be achieved by directly running the `sample-plugin` frontend project itself in development mode with `yarn start`, while starting the main Spring Boot application on the backend.
+
+### Development
+
+To develop the plugin, firstly launch the main Spring Boot application on the backend:
+
+```console
+mvn spring-boot:run -Dskip.yarn
+```
+
+Then start the plugin project in development mode:
+
+```console
+cd sample-plugin
+yarn start
+```
+
+Now you should be able to preview the plugins under development at <http://localhost:3001/hawtio/>. However, since it still hasn't been connected to a backend JVM, you can only test plugins that don't require the JMX MBean tree.
+
+To test plugins that depend on the JMX MBean tree, use Connect plugin <http://localhost:3001/hawtio/connect> to connect to the main Spring Boot application running in the background. The Jolokia endpoint should be <http://localhost:8080/hawtio/jolokia>.
+
+Now you can preview all kinds of plugins on the console under development, and run a faster development cycle by utilising hot reloading provided by Create React App.
