@@ -48,6 +48,14 @@ module.exports = {
       // For suppressing sourcemap warnings from dependencies
       webpackConfig.ignoreWarnings = [/Failed to parse source map/]
 
+      webpackConfig.resolve = {
+        ...webpackConfig.resolve,
+        fallback: {
+          path: require.resolve('path-browserify'),
+          os: require.resolve('os-browserify'),
+        },
+      }
+
       // MiniCssExtractPlugin - Ignore order as otherwise conflicting order warning is raised
       const miniCssExtractPlugin = webpackConfig.plugins.find(p => p.constructor.name === 'MiniCssExtractPlugin')
       if (miniCssExtractPlugin) {
