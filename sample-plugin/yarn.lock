@@ -1785,18 +1785,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hawtio/camel-model@npm:^3.20.3":
-  version: 3.20.3
-  resolution: "@hawtio/camel-model@npm:3.20.3"
-  checksum: e66034f57152aaece6a23ddac7449a3875d61d72d1551822388501d5e8a3c91d37c928b31a66f8d2f04a3b4b43fe891cd13999b4336416b58f6f8dfcdb1978e6
+"@hawtio/camel-model@npm:^3.20.6":
+  version: 3.20.6
+  resolution: "@hawtio/camel-model@npm:3.20.6"
+  checksum: 248009173137ddf31ddda834e3a2adaf83b3f471fd0d0311c8c21d05847e16a0659f506ced8f3202dc528b198cfc7433f35d6f1f6b03f5f2016d9821607d62cd
   languageName: node
   linkType: hard
 
-"@hawtio/react@npm:^0.3.0-dev.6":
-  version: 0.3.0-dev.6
-  resolution: "@hawtio/react@npm:0.3.0-dev.6"
+"@hawtio/react@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "@hawtio/react@npm:0.3.0"
   dependencies:
-    "@hawtio/camel-model": ^3.20.3
+    "@hawtio/camel-model": ^3.20.6
     "@module-federation/utilities": ^1.6.0
     "@patternfly/react-charts": ^6.94.19
     "@patternfly/react-code-editor": ^4.82.113
@@ -1808,24 +1808,24 @@ __metadata:
     "@types/dagre": ^0.7.48
     "@types/dagre-layout": ^0.8.2
     "@types/jest": ^29.5.2
-    "@types/node": ^18.16.18
-    "@types/react": ^18.2.13
+    "@types/node": ^18.16.19
+    "@types/react": ^18.2.14
     "@types/react-dom": ^18.2.6
     "@types/react-router-dom": ^5.3.3
     dagre: ^0.8.5
     eventemitter3: ^5.0.1
-    jolokia.js: 1.7.2
+    jolokia.js: 1.7.3-1
     jquery: ^3.7.0
     js-logger: ^1.6.1
-    keycloak-js: ^21.1.1
+    keycloak-js: ^21.1.2
     monaco-editor: ^0.39.0
     react: ^18.2.0
     react-dom: ^18.2.0
     react-markdown: ^8.0.7
-    react-monaco-editor: ^0.52.0
-    react-router-dom: ^6.13.0
+    react-monaco-editor: ^0.53.0
+    react-router-dom: ^6.14.1
     react-split: ^2.0.14
-    reactflow: ^11.7.3
+    reactflow: ^11.7.4
     superstruct: ^1.0.3
     typescript: ^4.9.5
     xml-formatter: ^3.4.1
@@ -1837,7 +1837,7 @@ __metadata:
   peerDependenciesMeta:
     keycloak-js:
       optional: true
-  checksum: 327324d97cf34b58c6e32b8a2696ebd899d89442807413f460e1119b2e161e40f53ab6c899a6d8c88732ea7f6f02bf013e9269b7b6a2074214ccf53140980628
+  checksum: 0522c0a9495f0dca54942612938b6fa2f0ecf68e209bf8ac280f7f98213c8a10c3c11a180cc0850bc7f6e5e5662ece9a2de58f426820ac0af8f4949b433bcf86
   languageName: node
   linkType: hard
 
@@ -2592,10 +2592,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@remix-run/router@npm:1.6.3":
-  version: 1.6.3
-  resolution: "@remix-run/router@npm:1.6.3"
-  checksum: f6968b1626af930b42f8cb5a044f05e4fbce05af6c7947beb1704e45c9570944e3be16ee008b185e5e13baac97948299eb55341b2a359c3e2e54b9d6646ae167
+"@remix-run/router@npm:1.7.2":
+  version: 1.7.2
+  resolution: "@remix-run/router@npm:1.7.2"
+  checksum: ea43bb662f1f5c93965989b1667fb6e8a301cb69c44341ee92c81cb15ea685b494168e5905593b5777d59058f1455b4b58083d5b895f04382e49362e420d7af4
   languageName: node
   linkType: hard
 
@@ -3535,10 +3535,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^18.16.18":
-  version: 18.16.18
-  resolution: "@types/node@npm:18.16.18"
-  checksum: d32d8a0a04cd3f5ecb361bcb42f3a07623881ac90d680e06bf626defb3c663a94860d11690babe607cfe67265eceeb8a59ba5fe40c0e49f5a1b01e0088640469
+"@types/node@npm:^18.16.19":
+  version: 18.16.19
+  resolution: "@types/node@npm:18.16.19"
+  checksum: 63c31f09616508aa7135380a4c79470a897b75f9ff3a70eb069e534dfabdec3f32fb0f9df5939127f1086614d980ddea0fa5e8cc29a49103c4f74cd687618aaf
   languageName: node
   linkType: hard
 
@@ -3634,14 +3634,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^18.2.13":
-  version: 18.2.13
-  resolution: "@types/react@npm:18.2.13"
+"@types/react@npm:^18.2.14":
+  version: 18.2.15
+  resolution: "@types/react@npm:18.2.15"
   dependencies:
     "@types/prop-types": "*"
     "@types/scheduler": "*"
     csstype: ^3.0.2
-  checksum: f7c15f19c164a29262993ea2aae2085fa38cddd9b8359fd8fefabfced91010b515a3abe2042b2b7f2f86e6b38a25b191415aa9313a9027175e3a000883c858cc
+  checksum: 36989f638201bfe2f4110b06c119180f6df9c0e13d7060481e82e7a745f81745a01ae543c478a25b61e0767cb52e82da2ad5b0dedacabf99339e523d06176705
   languageName: node
   linkType: hard
 
@@ -7875,7 +7875,7 @@ __metadata:
   dependencies:
     "@craco/craco": ^7.1.0
     "@hawtio/backend-middleware": ^1.0.3
-    "@hawtio/react": ^0.3.0-dev.6
+    "@hawtio/react": ^0.3.0
     "@patternfly/react-charts": ^6.94.19
     "@patternfly/react-core": ^4.276.8
     "@patternfly/react-table": ^4.113.0
@@ -9363,12 +9363,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jolokia.js@npm:1.7.2":
-  version: 1.7.2
-  resolution: "jolokia.js@npm:1.7.2"
+"jolokia.js@npm:1.7.3-1":
+  version: 1.7.3-1
+  resolution: "jolokia.js@npm:1.7.3-1"
   dependencies:
     "@types/jquery": ^3.5.14
-  checksum: 88aafeee1416ee6b02c0d7fd78bc8bf379a928f0047a7cb629c2eff5ddc9403a57b59ebbf58e86a55984649de76a18a93fc7153d7763d916981624f5034477af
+  checksum: 9bc6f6a5d42f8e3105c33fa00da09fbea3252251dec31d263d41876dbdd101da9581508b9c5517b934749958470eb6822fe75ab3a36474d452438417453b513c
   languageName: node
   linkType: hard
 
@@ -9580,13 +9580,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"keycloak-js@npm:^21.1.1":
-  version: 21.1.1
-  resolution: "keycloak-js@npm:21.1.1"
+"keycloak-js@npm:^21.1.2":
+  version: 21.1.2
+  resolution: "keycloak-js@npm:21.1.2"
   dependencies:
     base64-js: ^1.5.1
     js-sha256: ^0.9.0
-  checksum: 73c0340bd39301336e95755b3304bf96d660600660ee4729c0e2e51463fdea3a8ddf767ac0e8b6284092cdd68006ecd81f3d461863543bfb55c70cd2458deab8
+  checksum: 518dcdeda38fb111c8382bc033503d24fe1a2aaa0fee1e6a3120187bab4b9a0009bad7e1366db66ca1aaeb15997132316d58c675d61f09c96b4043c43f3516c9
   languageName: node
   linkType: hard
 
@@ -12298,16 +12298,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-monaco-editor@npm:^0.52.0":
-  version: 0.52.0
-  resolution: "react-monaco-editor@npm:0.52.0"
+"react-monaco-editor@npm:^0.53.0":
+  version: 0.53.0
+  resolution: "react-monaco-editor@npm:0.53.0"
   dependencies:
     prop-types: ^15.8.1
   peerDependencies:
     "@types/react": ">=16 <= 18"
-    monaco-editor: ^0.36.1
+    monaco-editor: ^0.38.0
     react: ">=16 <= 18"
-  checksum: ad880a432cca52d0e4cc05bc4249c88280cf5d6d6e902f14b6e8513cd909ec012fe6cc9c7483efedad8a3f3137f4da2c81d9ab334b17aa14369db7b6564f699f
+  checksum: c71801f8cca4f5f80d25818d5cb83b3ab71b247ed4069b5c67e8c75391d65ec3b7b49ed760c49a412106b644d2ad7282f6dcd599348482c4daf00ac15bd87022
   languageName: node
   linkType: hard
 
@@ -12318,27 +12318,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^6.13.0":
-  version: 6.13.0
-  resolution: "react-router-dom@npm:6.13.0"
+"react-router-dom@npm:^6.14.1":
+  version: 6.14.2
+  resolution: "react-router-dom@npm:6.14.2"
   dependencies:
-    "@remix-run/router": 1.6.3
-    react-router: 6.13.0
+    "@remix-run/router": 1.7.2
+    react-router: 6.14.2
   peerDependencies:
     react: ">=16.8"
     react-dom: ">=16.8"
-  checksum: f51131063c2d5e127b6b3f3f813c6d4988d0f37694a06697dc9d4a4d9d3825e2a4487ec9b81a1d356eb269018814d884ffc2e3d9ff056a46ae59c99c9e7e1086
+  checksum: a53dbc566ecab7890b829d42d38553684f704803c1f615db1bd6aa2d71542c369a1a79e4385be31ae71a14b72ddbcd0d8b51188248c2bccd44e015050d1927df
   languageName: node
   linkType: hard
 
-"react-router@npm:6.13.0":
-  version: 6.13.0
-  resolution: "react-router@npm:6.13.0"
+"react-router@npm:6.14.2":
+  version: 6.14.2
+  resolution: "react-router@npm:6.14.2"
   dependencies:
-    "@remix-run/router": 1.6.3
+    "@remix-run/router": 1.7.2
   peerDependencies:
     react: ">=16.8"
-  checksum: 31a187005d05e063c59324564a283cd28052eaf848ad446c87658f4fc48fa9543329fe8a14d7be14d9bbf62410d383f8cf1cf13898a838bf9c1e3201fe93384c
+  checksum: 7507bf5732b3a8ddbd901c2061216eebca73e194449bff58acc1445171e22bdda36b455b8af066e467748ebfb5875b3c0a565941c46af65c6f653a6ed0dc4fe4
   languageName: node
   linkType: hard
 
@@ -12430,7 +12430,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"reactflow@npm:^11.7.3":
+"reactflow@npm:^11.7.4":
   version: 11.7.4
   resolution: "reactflow@npm:11.7.4"
   dependencies:
