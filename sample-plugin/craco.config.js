@@ -48,6 +48,8 @@ module.exports = {
       // For suppressing sourcemap warnings from dependencies
       webpackConfig.ignoreWarnings = [/Failed to parse source map/]
 
+      // To resolve errors for @module-federation/utilities 2.x
+      // https://github.com/module-federation/universe/issues/827
       webpackConfig.resolve = {
         ...webpackConfig.resolve,
         fallback: {
