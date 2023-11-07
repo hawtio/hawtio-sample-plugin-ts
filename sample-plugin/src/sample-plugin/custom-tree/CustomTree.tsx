@@ -30,7 +30,7 @@ import {
   TreeViewDataItem,
 } from '@patternfly/react-core'
 import { CubesIcon } from '@patternfly/react-icons'
-import { IRequest, IResponse, IResponseFn } from 'jolokia.js'
+import { Request, Response } from 'jolokia.js'
 import React, { useContext, useEffect, useState } from 'react'
 import Split from 'react-split'
 import './CustomTree.css'
@@ -166,11 +166,11 @@ const MemoryView: React.FunctionComponent = () => {
     readAttributes()
 
     let handle: number | null = null
-    const register = async (request: IRequest, callback: IResponseFn) => {
+    const register = async (request: Request, callback: (response: Response) => void) => {
       handle = await jolokiaService.register(request, callback)
       log.debug(selectedNode.name, '- Register request: handle =', handle)
     }
-    register({ type: 'read', mbean, attribute: ['HeapMemoryUsage', 'NonHeapMemoryUsage'] }, (response: IResponse) => {
+    register({ type: 'read', mbean, attribute: ['HeapMemoryUsage', 'NonHeapMemoryUsage'] }, (response: Response) => {
       log.debug(selectedNode.name, '- Scheduler - Attributes:', response.value)
       const attrs = response.value as AttributeValues
       setAttributes(attrs)
@@ -303,7 +303,7 @@ const OSView: React.FunctionComponent = () => {
     readAttributes()
 
     let handle: number | null = null
-    const register = async (request: IRequest, callback: IResponseFn) => {
+    const register = async (request: Request, callback: (response: Response) => void) => {
       handle = await jolokiaService.register(request, callback)
       log.debug(selectedNode.name, '- Register request: handle =', handle)
     }
@@ -313,7 +313,7 @@ const OSView: React.FunctionComponent = () => {
         mbean,
         attribute: ['ProcessCpuLoad', 'SystemCpuLoad'],
       },
-      (response: IResponse) => {
+      (response: Response) => {
         log.debug(selectedNode.name, '- Scheduler - Attributes:', response.value)
         const attrs = response.value as AttributeValues
         updateHistory(attrs)
@@ -444,7 +444,7 @@ const ThreadsView: React.FunctionComponent = () => {
     readAttributes()
 
     let handle: number | null = null
-    const register = async (request: IRequest, callback: IResponseFn) => {
+    const register = async (request: Request, callback: (response: Response) => void) => {
       handle = await jolokiaService.register(request, callback)
       log.debug(selectedNode.name, '- Register request: handle =', handle)
     }
@@ -454,7 +454,7 @@ const ThreadsView: React.FunctionComponent = () => {
         mbean,
         attribute: ['TotalStartedThreadCount', 'PeakThreadCount', 'ThreadCount', 'DaemonThreadCount'],
       },
-      (response: IResponse) => {
+      (response: Response) => {
         log.debug(selectedNode.name, '- Scheduler - Attributes:', response.value)
         const attrs = response.value as AttributeValues
         updateHistory(attrs)

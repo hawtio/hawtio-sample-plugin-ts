@@ -40,7 +40,7 @@ export function useCustomTree() {
 async function populateTree(): Promise<CustomNode[]> {
   const domain = preferencesService.loadDomain()
   const tree = await workspace.getTree()
-  const target = tree.findDescendant(node => node.name === domain)
+  const target = tree.find(node => node.name === domain)
   if (!target) {
     return []
   }
