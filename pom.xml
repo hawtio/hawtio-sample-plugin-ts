@@ -15,9 +15,11 @@
     <maven.compiler.target>11</maven.compiler.target>
 
     <!-- Versions -->
-    <spring-boot-version>2.7.9</spring-boot-version>
-    <hawtio-version>3.0-beta-1</hawtio-version>
-    <frontend-maven-plugin-version>1.12.1</frontend-maven-plugin-version>
+    <spring-boot-version>2.7.17</spring-boot-version>
+    <hawtio-version>3.0-beta-3</hawtio-version>
+    <node-version>v18.18.2</node-version>
+    <yarn-version>v1.22.19</yarn-version>
+    <frontend-maven-plugin-version>1.14.2</frontend-maven-plugin-version>
 
     <!-- Path to the Hawtio TypeScript plugin -->
     <plugin.path>sample-plugin</plugin.path>
@@ -109,8 +111,8 @@
               <goal>install-node-and-yarn</goal>
             </goals>
             <configuration>
-              <nodeVersion>v16.15.0</nodeVersion>
-              <yarnVersion>v1.22.19</yarnVersion>
+              <nodeVersion>${node-version}</nodeVersion>
+              <yarnVersion>${yarn-version}</yarnVersion>
             </configuration>
           </execution>
           <execution>
