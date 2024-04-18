@@ -3,12 +3,12 @@ name: Build
 on:
   pull_request_target:
     branches:
-      - main
+      - hawtio-4.x
     paths-ignore:
       - '**.md'
   push:
     branches:
-      - main
+      - hawtio-4.x
     paths-ignore:
       - '**.md'
 
@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: ['11', '17']
+        java: ['11', '17', '21']
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
