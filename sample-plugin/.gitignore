@@ -5,7 +5,7 @@
 /.pnp
 .pnp.js
 
-# yarn (zero-installs)
+# yarn (non zero-installs)
 .pnp.*
 .yarn/*
 !.yarn/patches
