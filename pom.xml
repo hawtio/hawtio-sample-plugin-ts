@@ -15,9 +15,9 @@
     <maven.compiler.target>17</maven.compiler.target>
 
     <!-- Versions -->
-    <spring-boot-version>3.2.4</spring-boot-version>
-    <hawtio-version>4.0.0</hawtio-version>
-    <node-version>v20.12.2</node-version>
+    <spring-boot-version>3.4.5</spring-boot-version>
+    <hawtio-version>4.4.1</hawtio-version>
+    <node-version>v22.15.1</node-version>
     <yarn-version>v1.22.22</yarn-version>
     <frontend-maven-plugin-version>1.15.0</frontend-maven-plugin-version>
 

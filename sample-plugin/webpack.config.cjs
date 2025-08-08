@@ -40,6 +40,10 @@ module.exports = (_, args) => {
             singleton: true,
             requiredVersion: dependencies['@hawtio/react'],
           },
+          '@patternfly/react-core': {
+            singleton: true,
+            requiredVersion: dependencies['@patternfly/react-core'],
+          },
         },
       }),
       new HtmlWebpackPlugin({
@@ -107,6 +111,10 @@ module.exports = (_, args) => {
     },
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.jsx'],
+      symlinks: false,
+      alias: {
+        '@thumbmarkjs/thumbmarkjs': path.join(__dirname, './node_modules/@thumbmarkjs/thumbmarkjs/dist/thumbmark.esm.js'),
+      },
     },
     ignoreWarnings: [
       // For suppressing sourcemap warnings coming from some dependencies
