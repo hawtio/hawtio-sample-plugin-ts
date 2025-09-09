@@ -1,4 +1,4 @@
-import { CardBody, Form, FormGroup, FormSection, Text, TextInput } from '@patternfly/react-core'
+import { CardBody, Form, FormGroup, FormHelperText, FormSection, HelperText, HelperTextItem, Text, TextInput } from '@patternfly/react-core'
 import React, { useState } from 'react'
 import { preferencesService } from './preferences-service'
 
@@ -18,9 +18,15 @@ export const CustomTreePreferences: React.FunctionComponent = () => {
           <FormGroup
             label='Domain'
             fieldId='custom-tree-prefs-form-domain'
-            helperText='The target domain to activate the plugin. This is just for demonstration purposes, as the plugin may not work with other domains than `java.lang`.'
           >
-            <TextInput id='custom-tree-prefs-form-domain-input' type='text' value={domain} onChange={onDomainChanged} />
+            <TextInput id='custom-tree-prefs-form-domain-input' type='text' value={domain} onChange={(_, value) => onDomainChanged(value)} />
+            <FormHelperText>
+              <HelperText>
+                <HelperTextItem>
+                  The target domain to activate the plugin. This is just for demonstration purposes, as the plugin may not work with other domains than <code>java.lang</code>.
+                </HelperTextItem>
+              </HelperText>
+            </FormHelperText>
           </FormGroup>
         </FormSection>
       </Form>
