@@ -1,4 +1,5 @@
 import { HawtioPlugin, configManager } from '@hawtio/react'
+import { ai } from './ai'
 import { customTree } from './custom-tree'
 import { simple } from './simple'
 
@@ -19,6 +20,7 @@ import { simple } from './simple'
 export const plugin: HawtioPlugin = () => {
   simple()
   customTree()
+  ai()
 }
 
 // Register the custom plugin version to Hawtio
