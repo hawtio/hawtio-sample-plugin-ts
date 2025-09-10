@@ -37,7 +37,7 @@ import './AIView.css'
 import { AIViewContext, useAITree } from './context'
 import { log } from './globals'
 
-export const AIView: React.FunctionComponent = () => {
+export const AiView: React.FunctionComponent = () => {
   const { tree, loaded, selectedNode, setSelectedNode } = useAITree()
 
   if (!loaded) {

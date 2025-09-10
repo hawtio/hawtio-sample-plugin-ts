@@ -3,7 +3,6 @@ import { TreeViewDataItem } from '@patternfly/react-core'
 import { MemoryIcon, MicrochipIcon, MonitoringIcon, RunningIcon } from '@patternfly/react-icons'
 import React, { createContext, useEffect, useState } from 'react'
 import { pluginName, pluginTitle } from './globals'
-import { preferencesService } from './preferences-service'
 
 type CustomNode = TreeViewDataItem & {
   mbean?: string
@@ -38,7 +37,7 @@ export function useAITree() {
 }
 
 async function populateTree(): Promise<CustomNode[]> {
-  const domain = preferencesService.loadDomain()
+  const domain = 'java.lang'
   const tree = await workspace.getTree()
   const target = tree.find(node => node.name === domain)
   if (!target) {
