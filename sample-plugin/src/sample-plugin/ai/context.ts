@@ -1,28 +1,51 @@
-import { EVENT_REFRESH, eventService, workspace } from '@hawtio/react'
-import { TreeViewDataItem } from '@patternfly/react-core'
-import { MemoryIcon, MicrochipIcon, MonitoringIcon, RunningIcon } from '@patternfly/react-icons'
-import React, { createContext, useEffect, useState } from 'react'
-import { pluginName, pluginTitle } from './globals'
-
-type CustomNode = TreeViewDataItem & {
-  mbean?: string
-}
+import { EVENT_REFRESH, eventService, MBeanNode, MBeanTree, PluginNodeSelectionContext, workspace } from '@hawtio/react'
+import { createContext, useContext, useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { pluginName, pluginPath } from './globals'
 
 /**
- * Custom React hook for using the plugin-specific custom MBean tree.
+ * Custom React hook for using JMX MBean tree.
  */
-export function useAITree() {
-  const [tree, setTree] = useState<CustomNode[]>([])
+export function useMBeanTree() {
+  const [tree, setTree] = useState(MBeanTree.createEmpty(pluginName))
   const [loaded, setLoaded] = useState(false)
-  const [selectedNode, setSelectedNode] = useState<CustomNode | null>(null)
+  const { selectedNode, setSelectedNode } = useContext(PluginNodeSelectionContext)
+  const navigate = useNavigate()
+
+  /*
+   * Need to preserve the selected node between re-renders since the
+   * populateTree function called via the refresh listener does not
+   * cache the value and stores it as null
+   */
+  const refSelectedNode = useRef<MBeanNode | null>()
+  refSelectedNode.current = selectedNode
+
+  const populateTree = async () => {
+    const wkspTree: MBeanTree = await workspace.getTree()
+    setTree(wkspTree)
+
+    if (!refSelectedNode.current) return
+
+    const path = [...refSelectedNode.current.path()]
+
+    // Expand the nodes to redisplay the path
+    wkspTree.forEach(path, node => {
+      node.defaultExpanded = true
+    })
+
+    // Ensure the new version of the selected node is selected
+    const newSelected = wkspTree.navigate(...path)
+    if (newSelected) setSelectedNode(newSelected)
+
+    /* On population of tree, ensure the url path is returned to the base plugin path */
+    navigate(pluginPath)
+  }
 
   useEffect(() => {
     const loadTree = async () => {
-      const tree = await populateTree()
-      setTree(tree)
+      await populateTree()
       setLoaded(true)
     }
-    loadTree()
 
     const listener = () => {
       setLoaded(false)
@@ -30,65 +53,30 @@ export function useAITree() {
     }
     eventService.onRefresh(listener)
 
+    loadTree()
+
     return () => eventService.removeListener(EVENT_REFRESH, listener)
+    /*
+     * This effect should only be called on mount so cannot depend on selectedNode
+     * But cannot have [] removed either as this seems to execute the effect repeatedly
+     * So disable the lint check.
+     */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return { tree, loaded, selectedNode, setSelectedNode }
 }
 
-async function populateTree(): Promise<CustomNode[]> {
-  const domain = 'java.lang'
-  const tree = await workspace.getTree()
-  const target = tree.find(node => node.name === domain)
-  if (!target) {
-    return []
-  }
-
-  const root: CustomNode = {
-    name: pluginTitle,
-    id: pluginName,
-    mbean: domain,
-    icon: React.createElement(MonitoringIcon),
-    defaultExpanded: true,
-    children: [],
-  }
-  target.children?.forEach(child => {
-    const node: CustomNode = {
-      name: child.name,
-      id: child.name.replace(/\s/, '-'),
-      mbean: child.objectName,
-    }
-    switch (child.name) {
-      case 'Memory':
-        node.icon = React.createElement(MemoryIcon)
-        root.children?.push(node)
-        break
-      case 'OperatingSystem':
-        node.icon = React.createElement(MicrochipIcon)
-        root.children?.push(node)
-        break
-      case 'Threading':
-        node.icon = React.createElement(RunningIcon)
-        root.children?.push(node)
-        break
-      default:
-    }
-  })
-
-  return [root]
+type MBeanTreeContext = {
+  tree: MBeanTree
+  selectedNode: MBeanNode | null
+  setSelectedNode: (selected: MBeanNode | null) => void
 }
 
-type AIViewContext = {
-  tree: CustomNode[]
-  selectedNode: CustomNode | null
-  setSelectedNode: (selected: CustomNode | null) => void
-}
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const AIViewContext = createContext<AIViewContext>({
-  tree: [],
+export const MBeanTreeContext = createContext<MBeanTreeContext>({
+  tree: MBeanTree.createEmpty(pluginName),
   selectedNode: null,
   setSelectedNode: () => {
-    // no-op
+    /* no-op */
   },
 })
