@@ -1,23 +1,22 @@
-import { AttributeTable, Attributes, Chart, JmxContentMBeans, MBeanNode, Operations } from '@hawtio/react'
+import { Chart, JmxContentMBeans, MBeanNode, Operations } from '@hawtio/react'
 import {
   Divider,
   EmptyState,
   EmptyStateHeader,
   EmptyStateIcon,
-  EmptyStateVariant,
   Nav,
   NavItem,
   NavList,
   PageGroup,
   PageSection,
-  PageSectionVariants,
   Text,
-  Title,
+  Title
 } from '@patternfly/react-core'
 import { CubesIcon } from '@patternfly/react-icons/dist/esm/icons/cubes-icon'
 import React, { useContext } from 'react'
-import { NavLink, Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 import './JmxContent.css'
+import { Attributes, AttributeTable } from './attributes'
 import { MBeanTreeContext } from './context'
 import { pluginPath } from './globals'
 
@@ -27,8 +26,8 @@ export const JmxContent: React.FunctionComponent = () => {
 
   if (!selectedNode) {
     return (
-      <PageSection variant={PageSectionVariants.light} isFilled>
-        <EmptyState variant={EmptyStateVariant.full}>
+      <PageSection variant='light' isFilled>
+        <EmptyState variant='full'>
           <EmptyStateHeader titleText='Select MBean' icon={<EmptyStateIcon icon={CubesIcon} />} headingLevel='h1' />
         </EmptyState>
       </PageSection>
@@ -77,18 +76,18 @@ export const JmxContent: React.FunctionComponent = () => {
 
   return (
     <PageGroup id='jmx-content'>
-      <PageSection id='jmx-content-header' variant={PageSectionVariants.light}>
+      <PageSection id='jmx-content-header' variant='light'>
         <Title headingLevel='h1'>{selectedNode.name}</Title>
         <Text component='small'>{selectedNode.objectName}</Text>
       </PageSection>
       <Divider />
-      <PageSection type='tabs' variant={PageSectionVariants.light} hasShadowBottom>
+      <PageSection type='tabs' variant='light' hasShadowBottom>
         {mbeanNav}
       </PageSection>
       <Divider />
       <PageSection
         id='jmx-content-main'
-        variant={PageSectionVariants.light}
+        variant='light'
         padding={{ default: 'noPadding' }}
         hasOverflowScroll
         aria-label='jmx-content-main'

@@ -28,8 +28,8 @@ export const Jmx: React.FunctionComponent = () => {
 
   if (tree.isEmpty()) {
     return (
-      <PageSection variant={PageSectionVariants.light}>
-        <EmptyState variant={EmptyStateVariant.full}>
+      <PageSection variant='light'>
+        <EmptyState variant='full'>
           <EmptyStateHeader titleText='No MBeans found' icon={<EmptyStateIcon icon={CubesIcon} />} headingLevel='h1' />
         </EmptyState>
       </PageSection>

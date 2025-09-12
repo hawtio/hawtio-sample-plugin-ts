@@ -1,8 +1,8 @@
 import { HawtioPlugin, hawtio, helpRegistry, preferencesRegistry } from '@hawtio/react'
 import { AiPreferences } from './AiPreferences'
-import { AiView } from './AiView'
 import { log, pluginName, pluginPath, pluginTitle } from './globals'
 import help from './help.md'
+import { Jmx } from './Jmx'
 
 export const ai: HawtioPlugin = () => {
   log.info('Loading', pluginName)
@@ -11,7 +11,7 @@ export const ai: HawtioPlugin = () => {
     id: pluginName,
     title: pluginTitle,
     path: pluginPath,
-    component: AiView,
+    component: Jmx,
     isActive: async () => true
   })
 
