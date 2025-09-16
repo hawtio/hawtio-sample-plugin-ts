@@ -4,7 +4,7 @@ import { AttributeValues, jolokiaService } from '@hawtio/react'
 import { escapeMBean } from '@hawtio/react'
 import { JolokiaRequest, JolokiaErrorResponse, JolokiaSuccessResponse, RequestOptions } from 'jolokia.js'
 import { log } from '../globals'
-import { jmxPreferencesService } from ''@hawtio/react'
+import { jmxPreferencesService } from '@hawtio/react'
 
 class AttributeService {
   private handles: number[] = []
