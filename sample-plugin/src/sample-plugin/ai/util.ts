@@ -64,3 +64,22 @@ export function humanizeLabels(str: string): string {
     .replace(/ +/, ' ')
     .trim()
 }
+
+/**
+ * Escapes the mbean for Jolokia GET requests.
+ *
+ * @param mbean the MBean
+ */
+export function escapeMBean(mbean: string): string {
+  return encodeURI(applyJolokiaEscapeRules(mbean))
+}
+
+/**
+ * Applies the Jolokia escaping rules to the MBean name.
+ * See: https://jolokia.org/reference/html/manual/jolokia_protocol.html#_escaping_rules_in_get_requests
+ *
+ * @param mbean the MBean
+ */
+function applyJolokiaEscapeRules(mbean: string): string {
+  return mbean.replace(/!/g, '!!').replace(/\//g, '!/').replace(/"/g, '!"')
+}

@@ -6,6 +6,7 @@ import { DynamicStructuredTool } from '@langchain/core/tools'
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai"
 import { ChatOllama, ChatOllamaCallOptions } from "@langchain/ollama"
 import { aiPreferencesService } from './ai-preferences-service'
+import { log } from './globals'
 import { AiModel, MODELS } from './model'
 
 
@@ -34,6 +35,12 @@ class AiService implements IAiService {
   private messages: BaseMessage[] = []
 
   reset(model: AiModel) {
+    if (this.model.id === model.id) {
+      return
+    }
+    log.info('Reset AI model:', model.id)
+    // Should we keep the message history when changing model?
+    //this.messages = []
     const { token } = aiPreferencesService.loadOptions()
     this.model = model
     switch (model.type) {
@@ -50,7 +57,7 @@ class AiService implements IAiService {
   }
 
   async chat(message: string): Promise<AIMessage | string> {
-    console.log('Chatting with', this.model.id, ':', message)
+    log.debug('Chatting with', this.model.id, ':', message)
     this.messages.push(new HumanMessage(message))
     try {
       let answer: AIMessageChunk
@@ -61,9 +68,9 @@ class AiService implements IAiService {
       }
 
       if (answer.tool_calls && answer.tool_calls.length > 0) {
-        console.log('🛠️  calls:', answer.tool_calls)
+        log.debug('🛠️  calls:', answer.tool_calls)
       }
-      console.log('Answer:', answer)
+      log.debug('Answer:', answer)
       this.messages.push(answer)
       return answer
     } catch (error) {
@@ -76,7 +83,7 @@ class AiService implements IAiService {
     let str = ''
     if (Array.isArray(message)) {
       const complex = message[0]
-      console.log('Complex message:', complex)
+      log.debug('Complex message:', complex)
       complex?.type === 'text' && (str = complex.text)
     } else {
       str = message as string
@@ -85,7 +92,7 @@ class AiService implements IAiService {
     const think = str.match(/<think>(.*?)<\/think>/s)?.[1]?.trim()
     // remove <think>...</think> from message
     const content = str.replace(/<think>.*?<\/think>/s, '')
-    console.log('Response - content:', content, 'think:', think)
+    log.debug('Response - content:', content, 'think:', think)
     return { content, think }
   }
 
@@ -95,11 +102,11 @@ class AiService implements IAiService {
     }
 
     for (const call of toolCalls) {
-      console.log('🛠️  Call:', call.name, JSON.stringify(call.args))
+      log.debug('🛠️  Call:', call.name, JSON.stringify(call.args))
       const selectedTool = TOOLS_BY_NAME[call.name]
       const toolAnswer = await selectedTool?.invoke(call)
       if (toolAnswer) {
-        console.log('🛠️  ' + call.name + ':', toolAnswer)
+        log.debug('🛠️  ' + call.name + ':', toolAnswer)
         this.messages.push(toolAnswer)
       }
     }

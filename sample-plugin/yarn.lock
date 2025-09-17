@@ -1401,18 +1401,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@module-federation/sdk@npm:0.18.0":
-  version: 0.18.0
-  resolution: "@module-federation/sdk@npm:0.18.0"
-  checksum: 10/f397dc53c705ad1f1e19530a8ff79116bb5aeeef92a79b3acaaa6140ae4e5784b42e81d1445eabf536c007c9383857f6764506ed725a6352464fe1ce581af89a
+"@module-federation/sdk@npm:0.19.1":
+  version: 0.19.1
+  resolution: "@module-federation/sdk@npm:0.19.1"
+  checksum: 10/512bc3de0c5e6c4b84871ac6106564903f2497a325dd871b62728d7aacb69a860c10c91602594a06a267ecb263f8a8fde895fbfa90918df9ceebee8a4cda5e28
   languageName: node
   linkType: hard
 
 "@module-federation/utilities@npm:^3.1.62":
-  version: 3.1.63
-  resolution: "@module-federation/utilities@npm:3.1.63"
+  version: 3.1.69
+  resolution: "@module-federation/utilities@npm:3.1.69"
   dependencies:
-    "@module-federation/sdk": "npm:0.18.0"
+    "@module-federation/sdk": "npm:0.19.1"
   peerDependencies:
     react: ^16 || ^17 || ^18
     react-dom: ^16 || ^17 || ^18
@@ -1424,7 +1424,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10/a89bc6f389e5e51787129b2cd67ac9e93e5bded9ba9f519a7491749c574ea3af7ed525239af00d4db6a0c0a10336acac2030b36c3344753e5ad198c3e6b53807
+  checksum: 10/5ce330c83d9594cc323b566b88ba6dd6189c525975be96f8b2efbb12bc96f66aefeac9029bbdbd16ac9a2e5e86acde779e3fabe194d78bf8ebdbda2c2d71e1da
   languageName: node
   linkType: hard
 
@@ -1871,9 +1871,9 @@ __metadata:
   linkType: hard
 
 "@thumbmarkjs/thumbmarkjs@npm:^1.1.1":
-  version: 1.1.2
-  resolution: "@thumbmarkjs/thumbmarkjs@npm:1.1.2"
-  checksum: 10/2bb0d53c47e1c94ed6a2f38827dcfe0d612a541ae7321482bff4166bb4d3bebcb4d122c387be7901bf85625ec3d1b42523d02214b2b9867e0f87eca29af824f3
+  version: 1.2.0
+  resolution: "@thumbmarkjs/thumbmarkjs@npm:1.2.0"
+  checksum: 10/39771263378b22b11a6646685c09f71139b3d7bda82ff2ba06716821fe11cd0ab7d4a39a1b9ea802be629f672a16af5b3b985ec3f90980ea5e29afb893eff4f3
   languageName: node
   linkType: hard
 
@@ -7700,9 +7700,9 @@ __metadata:
   linkType: hard
 
 "oauth4webapi@npm:^3.6.1":
-  version: 3.6.1
-  resolution: "oauth4webapi@npm:3.6.1"
-  checksum: 10/12fcda932796622b2de011ac42961f67ff5b808c0df30163f669dfaf4e0264689008964843e5181250426dba686a338eec0ff3a714d0df0cb626b884b122a4ff
+  version: 3.8.1
+  resolution: "oauth4webapi@npm:3.8.1"
+  checksum: 10/e6d35b187736529e3f2479d917f2bf90f66badfad805c9ddb038671e53b6383b7d9793686fe2d5363906fdeeebdff58b55bf111b44bc3c9ae8c431a46dd15b6a
   languageName: node
   linkType: hard
 
