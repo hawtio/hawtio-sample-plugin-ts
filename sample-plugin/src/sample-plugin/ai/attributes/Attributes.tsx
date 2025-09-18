@@ -1,15 +1,17 @@
-import { AttributeValues, HawtioEmptyCard, HawtioLoadingCard, PluginNodeSelectionContext } from '@hawtio/react'
-import { Drawer, DrawerContent, DrawerContentBody, Panel } from '@patternfly/react-core'
+import { AttributeValues, eventService, HawtioEmptyCard, HawtioLoadingCard, PluginNodeSelectionContext } from '@hawtio/react'
+import { Button, Drawer, DrawerContent, DrawerContentBody, Panel, Toolbar, ToolbarContent, ToolbarItem } from '@patternfly/react-core'
+import { MonitoringIcon } from '@patternfly/react-icons'
 import { Table, Tbody, Td, Th, Thead, ThProps, Tr } from '@patternfly/react-table'
 import Jolokia from 'jolokia.js'
 import React, { useContext, useEffect, useState } from 'react'
+import { aiService } from '../ai-service'
 import { log } from '../globals'
 import { isObject, objectSorter } from '../util'
 import { attributeService } from './attribute-service'
 import { AttributeModal } from './AttributeModal'
 import './AttributeTable.css'
 
-export const Attributes: React.FunctionComponent = () => {
+export const Attributes: React.FC = () => {
   const { selectedNode } = useContext(PluginNodeSelectionContext)
   const [attributes, setAttributes] = useState<AttributeValues>({})
   const [isReading, setIsReading] = useState(true)
@@ -102,6 +104,7 @@ export const Attributes: React.FunctionComponent = () => {
 
   const attributesTable = (
     <div id='attribute-table-with-panel'>
+      <AiJmxToolbar attributes={attributes} />
       <Table aria-label='Attributes' variant='compact'>
         <Thead>
           <Tr>
@@ -135,5 +138,50 @@ export const Attributes: React.FunctionComponent = () => {
         </DrawerContent>
       </Drawer>
     </Panel>
+  )
+}
+
+const AiJmxToolbar: React.FC<{ attributes: AttributeValues }> = ({ attributes }) => {
+  const { selectedNode } = useContext(PluginNodeSelectionContext)
+
+  if (!selectedNode || !selectedNode.mbean || !selectedNode.objectName) {
+    return null
+  }
+  const { objectName } = selectedNode
+
+  const diagnose = () => {
+    eventService.notify({ type: 'info', message: 'Diagnosing...' })
+    const attrsValue = JSON.stringify(attributes)
+    log.debug('Attributes:', attrsValue)
+    aiService.diagnose(objectName, attrsValue).then(response => {
+      if (typeof response === 'string') {
+        eventService.notify({ type: 'danger', message: response })
+        return
+      }
+      const message = response.content as string
+      if (!message) {
+        eventService.notify({ type: 'warning', message: 'No diagnosis available' })
+        return
+      }
+      log.debug('Diagnosis:', message)
+      eventService.notify({ type: 'info', message })
+    })
+  }
+
+  return (
+    <Toolbar id='ai-jmx-toolbar'>
+      <ToolbarContent>
+        <ToolbarItem>
+          <Button
+            variant='primary'
+            size='sm'
+            icon={<MonitoringIcon />}
+            onClick={diagnose}
+          >
+            &nbsp;Diagnose
+          </Button>
+        </ToolbarItem>
+      </ToolbarContent>
+    </Toolbar>
   )
 }

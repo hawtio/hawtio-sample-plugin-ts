@@ -3,7 +3,7 @@ import EyeIcon from '@patternfly/react-icons/dist/esm/icons/eye-icon'
 import EyeSlashIcon from '@patternfly/react-icons/dist/esm/icons/eye-slash-icon'
 import React, { useState } from 'react'
 import { AiOptions, aiPreferencesService, } from './ai-preferences-service'
-import { MODELS } from './model'
+import { MODELS } from './ai-model'
 
 export const AiPreferences: React.FunctionComponent = () => {
   const [options, setOptions] = useState(aiPreferencesService.loadOptions())

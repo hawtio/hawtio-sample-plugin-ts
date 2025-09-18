@@ -1,5 +1,5 @@
 import { aiService } from './ai-service'
-import { MODELS } from './model'
+import { MODELS } from './ai-model'
 
 export const STORAGE_KEY_PREFERENCES = 'ai.preferences'
 

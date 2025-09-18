@@ -20,7 +20,7 @@ import { Attributes, AttributeTable } from './attributes'
 import { MBeanTreeContext } from './context'
 import { pluginPath } from './globals'
 
-export const JmxContent: React.FunctionComponent = () => {
+export const JmxContent: React.FC = () => {
   const { selectedNode } = useContext(MBeanTreeContext)
   const { pathname, search } = useLocation()
 
@@ -38,10 +38,10 @@ export const JmxContent: React.FunctionComponent = () => {
   const mBeanCollectionApplicable = (node: MBeanNode) => Boolean(node.children?.every(child => child.objectName))
   const hasAnyApplicableMBean = (node: MBeanNode) =>
     Boolean(node.objectName) || Boolean(node.children?.some(child => child.objectName))
-  const ALWAYS = (node: MBeanNode) => true
+  const ALWAYS = (_node: MBeanNode) => true
 
-  const tableSelector: (node: MBeanNode) => React.FunctionComponent = (node: MBeanNode) => {
-    const tablePriorityList: { condition: (node: MBeanNode) => boolean; element: React.FunctionComponent }[] = [
+  const tableSelector = (node: MBeanNode): React.FC => {
+    const tablePriorityList: { condition: (node: MBeanNode) => boolean; element: React.FC }[] = [
       { condition: mBeanApplicable, element: Attributes },
       { condition: mBeanCollectionApplicable, element: AttributeTable },
     ]
