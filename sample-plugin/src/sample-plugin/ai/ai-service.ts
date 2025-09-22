@@ -29,13 +29,13 @@ export interface IAiService {
 }
 
 class AiService implements IAiService {
-  private model: AiModel
+  private model?: AiModel
   private llm?: ChatGoogleGenerativeAI | ChatOllama
   private llmWithTools?: Runnable<BaseLanguageModelInput, AIMessageChunk, ChatOllamaCallOptions>
   private messages: BaseMessage[] = []
 
   reset(model: AiModel): void {
-    if (this.model.id === model.id) {
+    if (this.model && this.model.id === model.id && this.llm && (!model.tool || this.llmWithTools)) {
       return
     }
     log.info('AI model to use:', model.id)
@@ -62,33 +62,32 @@ class AiService implements IAiService {
   }
 
   private getLlm(): ChatGoogleGenerativeAI | ChatOllama | Runnable<BaseLanguageModelInput, AIMessageChunk, ChatOllamaCallOptions> | undefined {
-    if (!this.llm) {
+    if (!this.model || !this.llm) {
       const { model } = aiPreferencesService.loadOptions()
       const modelObj = MODELS.find(m => m.id === model) ?? MODELS[0]!
       this.reset(modelObj)
     }
-    if (!this.llmWithTools) {
+    if (this.llmWithTools) {
       return this.llmWithTools
     }
     return this.llm
   }
 
   async invoke(messages: BaseMessage[]): Promise<AIMessage | string> {
-    log.debug('Chatting with', this.model.id, ':', messages)
-    this.messages.push(...messages)
+    // Lazy init model and llm
+    const llm = this.getLlm()
+    log.debug('Chatting with', this.model?.id, ':', messages)
     try {
       let answer: AIMessageChunk
-      const llm = this.getLlm()
       if (!llm) {
         throw new Error('AI model not configured')
       }
-      answer = await llm.invoke(this.messages)
+      answer = await llm.invoke(messages)
 
       if (answer.tool_calls && answer.tool_calls.length > 0) {
         log.debug('🛠️  calls:', answer.tool_calls)
       }
       log.debug('Answer:', answer)
-      this.messages.push(answer)
       return answer
     } catch (error) {
       log.error('Error while chatting:', error)

@@ -164,7 +164,7 @@ const AiJmxToolbar: React.FC<{ attributes: AttributeValues }> = ({ attributes })
         return
       }
       log.debug('Diagnosis:', message)
-      eventService.notify({ type: 'info', message })
+      eventService.notify({ type: 'info', message, duration: 1000 * 60 * 10 })
     })
   }
 
