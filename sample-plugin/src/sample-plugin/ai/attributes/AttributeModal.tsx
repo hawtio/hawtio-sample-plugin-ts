@@ -1,5 +1,6 @@
 import { eventService, PluginNodeSelectionContext } from '@hawtio/react'
 import {
+  Alert,
   Button,
   ClipboardCopy,
   DrawerActions,
@@ -9,20 +10,28 @@ import {
   DrawerPanelContent,
   Form,
   FormGroup,
+  Hint,
+  HintBody,
+  HintFooter,
+  HintTitle,
   TextArea,
   TextInput,
-  Title,
+  Title
 } from '@patternfly/react-core'
+import { InfoCircleIcon } from '@patternfly/react-icons'
 import React, { useContext, useEffect, useState } from 'react'
+import Markdown from 'react-markdown'
+import { aiService, MessageWithThink } from '../ai-service'
 import { log } from '../globals'
 import { attributeService } from './attribute-service'
 
-export const AttributeModal: React.FunctionComponent<{
-  isOpen: boolean
+export const AttributeModal: React.FC<{
+  isAttributeSelected: boolean
   onClose: () => void
   onUpdate: () => void
   input: { name: string; value: string }
-}> = ({ isOpen, onClose, onUpdate, input }) => {
+  aiMessage?: string
+}> = ({ isAttributeSelected, onClose, onUpdate, input, aiMessage }) => {
   const { selectedNode } = useContext(PluginNodeSelectionContext)
   const attributeName = input.name
   const [attributeValue, setAttributeValue] = useState('')
@@ -85,7 +94,7 @@ export const AttributeModal: React.FunctionComponent<{
     onClose()
   }
 
-  const modalTitle = `Attribute: ${attributeName}`
+  const modalTitle = isAttributeSelected ? `Attribute: ${attributeName}` : 'Attributes'
 
   const modalActions = []
 
@@ -96,6 +105,8 @@ export const AttributeModal: React.FunctionComponent<{
       </Button>,
     )
   }
+
+  const diagnosis: MessageWithThink = aiMessage ? aiService.toBotMessage(aiMessage) : { content: '' }
 
   return (
     <DrawerPanelContent isResizable>
@@ -108,47 +119,67 @@ export const AttributeModal: React.FunctionComponent<{
         </DrawerActions>
       </DrawerHead>
 
-      <DrawerPanelBody>
-        <Form id='attribute-form' isHorizontal>
-          <FormGroup label='Name' fieldId='attribute-form-name'>
-            <TextInput
-              id='attribute-form-name'
-              name='attribute-form-name'
-              value={attributeName}
-              readOnlyVariant='default'
-            />
-          </FormGroup>
-          <FormGroup label='Description' fieldId='attribute-form-description'>
-            <TextArea
-              id='attribute-form-description'
-              name='attribute-form-description'
-              value={attribute.desc}
-              readOnlyVariant='default'
-            />
-          </FormGroup>
-          <FormGroup label='Type' fieldId='attribute-form-type'>
-            <TextInput
-              id='attribute-form-type'
-              name='attribute-form-type'
-              value={attribute.type}
-              readOnlyVariant='default'
-            />
-          </FormGroup>
-          <FormGroup label='Jolokia URL' fieldId='attribute-form-jolokia-url'>
-            <ClipboardCopy isReadOnly>{jolokiaUrl}</ClipboardCopy>
-          </FormGroup>
-          <FormGroup label='Value' fieldId='attribute-form-value'>
-            <TextInput
-              id='attribute-form-value'
-              name='attribute-form-value'
-              value={attributeValue}
-              onChange={(_event, value) => setAttributeValue(value)}
-              readOnlyVariant={isWritable ? undefined : 'default'}
-            />
-          </FormGroup>
-          <FormGroup>{modalActions}</FormGroup>
-        </Form>
-      </DrawerPanelBody>
+      {isAttributeSelected && (
+        <DrawerPanelBody>
+          <Form id='attribute-form' isHorizontal>
+            <FormGroup label='Name' fieldId='attribute-form-name'>
+              <TextInput
+                id='attribute-form-name'
+                name='attribute-form-name'
+                value={attributeName}
+                readOnlyVariant='default'
+              />
+            </FormGroup>
+            <FormGroup label='Description' fieldId='attribute-form-description'>
+              <TextArea
+                id='attribute-form-description'
+                name='attribute-form-description'
+                value={attribute.desc}
+                readOnlyVariant='default'
+              />
+            </FormGroup>
+            <FormGroup label='Type' fieldId='attribute-form-type'>
+              <TextInput
+                id='attribute-form-type'
+                name='attribute-form-type'
+                value={attribute.type}
+                readOnlyVariant='default'
+              />
+            </FormGroup>
+            <FormGroup label='Jolokia URL' fieldId='attribute-form-jolokia-url'>
+              <ClipboardCopy isReadOnly>{jolokiaUrl}</ClipboardCopy>
+            </FormGroup>
+            <FormGroup label='Value' fieldId='attribute-form-value'>
+              <TextInput
+                id='attribute-form-value'
+                name='attribute-form-value'
+                value={attributeValue}
+                onChange={(_event, value) => setAttributeValue(value)}
+                readOnlyVariant={isWritable ? undefined : 'default'}
+              />
+            </FormGroup>
+            <FormGroup>{modalActions}</FormGroup>
+          </Form>
+        </DrawerPanelBody>
+      )}
+
+      {aiMessage && (
+        <DrawerPanelBody>
+          <Hint>
+            <HintTitle><InfoCircleIcon /> Diagnosis</HintTitle>
+            <HintBody>
+              <Markdown>{diagnosis.content}</Markdown>
+            </HintBody>
+            {diagnosis.think && (
+              <HintFooter>
+                <Alert variant='info' title='Think' isExpandable>
+                  <Markdown>{diagnosis.think}</Markdown>
+                </Alert>
+              </HintFooter>
+            )}
+          </Hint>
+        </DrawerPanelBody>
+      )}
     </DrawerPanelContent>
   )
 }

@@ -16,9 +16,11 @@ export const Attributes: React.FC = () => {
   const [attributes, setAttributes] = useState<AttributeValues>({})
   const [isReading, setIsReading] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isAttributeSelected, setIsAttributeSelected] = useState(false)
   const [sortDirection, setSortDirection] = React.useState<'asc' | 'desc'>('asc')
   const [selected, setSelected] = useState({ name: '', value: '' })
   const [reload, setReload] = useState(false)
+  const [aiMessage, setAiMessage] = useState<string | undefined>(undefined)
 
   useEffect(() => {
     if (!selectedNode || !selectedNode.mbean || !selectedNode.objectName) {
@@ -76,6 +78,7 @@ export const Attributes: React.FC = () => {
 
   const selectAttribute = (attribute: { name: string; value: string }) => {
     setSelected(attribute)
+    setIsAttributeSelected(true)
     if (!isModalOpen) {
       setIsModalOpen(true)
     }
@@ -95,16 +98,24 @@ export const Attributes: React.FC = () => {
 
   const panelContent = (
     <AttributeModal
-      isOpen={isModalOpen}
-      onClose={() => setIsModalOpen(false)}
+      isAttributeSelected={isAttributeSelected}
+      onClose={() => {
+        setIsModalOpen(false)
+        setIsAttributeSelected(false)
+      }}
       onUpdate={() => setReload(true)}
       input={selected}
+      aiMessage={aiMessage}
     />
   )
 
   const attributesTable = (
     <div id='attribute-table-with-panel'>
-      <AiJmxToolbar attributes={attributes} />
+      <AiJmxToolbar
+        attributes={attributes}
+        setAiMessage={setAiMessage}
+        onDiagnosisFinished={() => setIsModalOpen(true)}
+      />
       <Table aria-label='Attributes' variant='compact'>
         <Thead>
           <Tr>
@@ -141,7 +152,11 @@ export const Attributes: React.FC = () => {
   )
 }
 
-const AiJmxToolbar: React.FC<{ attributes: AttributeValues }> = ({ attributes }) => {
+const AiJmxToolbar: React.FC<{
+  attributes: AttributeValues
+  setAiMessage: (message: string) => void
+  onDiagnosisFinished: () => void
+}> = ({ attributes, setAiMessage, onDiagnosisFinished }) => {
   const { selectedNode } = useContext(PluginNodeSelectionContext)
 
   if (!selectedNode || !selectedNode.mbean || !selectedNode.objectName) {
@@ -164,7 +179,9 @@ const AiJmxToolbar: React.FC<{ attributes: AttributeValues }> = ({ attributes })
         return
       }
       log.debug('Diagnosis:', message)
-      eventService.notify({ type: 'info', message, duration: 1000 * 60 * 10 })
+      eventService.notify({ type: 'success', message: 'Diagnosis completed' })
+      setAiMessage(message)
+      onDiagnosisFinished()
     })
   }
 

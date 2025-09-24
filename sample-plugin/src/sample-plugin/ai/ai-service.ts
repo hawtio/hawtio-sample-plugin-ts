@@ -1,5 +1,5 @@
 import { BaseLanguageModelInput } from '@langchain/core/language_models/base'
-import { AIMessage, AIMessageChunk, BaseMessage, HumanMessage, MessageContent, SystemMessage } from '@langchain/core/messages'
+import { AIMessage, AIMessageChunk, BaseMessage, HumanMessage, SystemMessage } from '@langchain/core/messages'
 import { ToolCall } from '@langchain/core/messages/tool'
 import { Runnable } from '@langchain/core/runnables'
 import { DynamicStructuredTool } from '@langchain/core/tools'
@@ -16,16 +16,16 @@ const TOOLS_BY_NAME: Record<string, DynamicStructuredTool> = TOOLS.reduce((acc, 
   return acc
 }, {} as Record<string, DynamicStructuredTool>)
 
-export type BotMessage = {
-  content: string | AIMessage
-  think?: string | undefined
+export type MessageWithThink = {
+  content: string
+  think?: string
 }
 
 export interface IAiService {
   reset(model: AiModel): void
   chat(message: string): Promise<AIMessage | string>
   invokeTools(toolCalls: ToolCall[]): Promise<AIMessage | string>
-  toBotMessage(message: MessageContent): BotMessage
+  toBotMessage(message: string): MessageWithThink
 }
 
 class AiService implements IAiService {
@@ -99,19 +99,11 @@ class AiService implements IAiService {
     return this.invoke([new HumanMessage(message)])
   }
 
-  toBotMessage(message: MessageContent): BotMessage {
-    let str = ''
-    if (Array.isArray(message)) {
-      const complex = message[0]
-      log.debug('Complex message:', complex)
-      complex?.type === 'text' && (str = complex.text)
-    } else {
-      str = message as string
-    }
+  toBotMessage(message: string): MessageWithThink {
     // extract inside <think>...</think> from message
-    const think = str.match(/<think>(.*?)<\/think>/s)?.[1]?.trim()
+    const think = message.match(/<think>(.*?)<\/think>/s)?.[1]?.trim()
     // remove <think>...</think> from message
-    const content = str.replace(/<think>.*?<\/think>/s, '')
+    const content = message.replace(/<think>.*?<\/think>/s, '')
     log.debug('Response - content:', content, 'think:', think)
     return { content, think }
   }
