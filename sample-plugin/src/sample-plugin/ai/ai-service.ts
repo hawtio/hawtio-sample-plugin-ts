@@ -46,11 +46,18 @@ class AiService implements IAiService {
     try {
       switch (this.model.type) {
         case 'google-genai':
-          this.llm = new ChatGoogleGenerativeAI({ model: this.model.id, apiKey: token, temperature: 0 })
+          this.llm = new ChatGoogleGenerativeAI({
+            model: this.model.id,
+            apiKey: token,
+            temperature: 0,
+            //disableStreaming: true,
+          })
           break
         case 'ollama':
         default:
-          this.llm = new ChatOllama({ model: this.model.id })
+          this.llm = new ChatOllama({
+            model: this.model.id
+          })
       }
     } catch (error) {
       // Mostly token is missing/invalid

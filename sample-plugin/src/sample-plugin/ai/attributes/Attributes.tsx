@@ -145,7 +145,7 @@ export const Attributes: React.FC = () => {
     <Panel>
       <Drawer isExpanded={isModalOpen} className={'pf-m-inline-on-2xl'}>
         <DrawerContent panelContent={panelContent}>
-          <DrawerContentBody hasPadding> {attributesTable}</DrawerContentBody>
+          <DrawerContentBody hasPadding>{attributesTable}</DrawerContentBody>
         </DrawerContent>
       </Drawer>
     </Panel>
