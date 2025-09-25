@@ -50,13 +50,14 @@ class AiService implements IAiService {
             model: this.model.id,
             apiKey: token,
             temperature: 0,
-            //disableStreaming: true,
+            disableStreaming: true,
           })
           break
         case 'ollama':
         default:
           this.llm = new ChatOllama({
-            model: this.model.id
+            model: this.model.id,
+            streaming: false,
           })
       }
     } catch (error) {
