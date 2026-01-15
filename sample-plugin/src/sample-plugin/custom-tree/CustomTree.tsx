@@ -10,27 +10,26 @@ import {
   ChartLabel,
   ChartLine,
   ChartVoronoiContainer,
-} from '@patternfly/react-charts'
+} from '@patternfly/react-charts/victory'
 import {
   Card,
   CardBody,
   CardTitle,
+  Content,
   DescriptionList,
   DescriptionListDescription,
   DescriptionListGroup,
   DescriptionListTerm,
   EmptyState,
-  EmptyStateIcon,
   PageGroup,
   PageSection,
   Spinner,
-  Text,
   Title,
   TreeView,
-  TreeViewDataItem,
+  TreeViewDataItem
 } from '@patternfly/react-core'
 import { CubesIcon } from '@patternfly/react-icons'
-import { Request, Response } from 'jolokia.js'
+import Jolokia, { JolokiaErrorResponse, JolokiaRequest, JolokiaSuccessResponse } from 'jolokia.js'
 import React, { useContext, useEffect, useState } from 'react'
 import Split from 'react-split'
 import './CustomTree.css'
@@ -43,7 +42,7 @@ export const CustomTree: React.FunctionComponent = () => {
   if (!loaded) {
     return (
       <PageSection>
-        <Spinner isSVG aria-label='Loading custom tree' />
+        <Spinner aria-label='Loading custom tree' />
       </PageSection>
     )
   }
@@ -87,9 +86,8 @@ const CustomTreeContent: React.FunctionComponent = () => {
 
   if (!selectedNode) {
     return (
-      <PageSection variant='light' isFilled>
-        <EmptyState variant='full'>
-          <EmptyStateIcon icon={CubesIcon} />
+      <PageSection variant='default' isFilled>
+        <EmptyState variant='full' icon={CubesIcon} >
           <Title headingLevel='h1' size='lg'>
             Select Node
           </Title>
@@ -115,12 +113,12 @@ const CustomTreeContent: React.FunctionComponent = () => {
   return (
     <React.Fragment>
       <PageGroup>
-        <PageSection variant='light' className='custom-tree-content-header'>
+        <PageSection variant='default' className='custom-tree-content-header'>
           <Title headingLevel='h1'>{selectedNode.name}</Title>
-          <Text component='small'>{selectedNode.mbean}</Text>
+          <Content component='small'>{selectedNode.mbean}</Content>
         </PageSection>
       </PageGroup>
-      <PageSection variant='light' className='custom-tree-content-main'>
+      <PageSection variant='default' className='custom-tree-content-main'>
         {customTreeContent}
       </PageSection>
     </React.Fragment>
@@ -166,11 +164,15 @@ const MemoryView: React.FunctionComponent = () => {
     readAttributes()
 
     let handle: number | null = null
-    const register = async (request: Request, callback: (response: Response) => void) => {
+    const register = async (request: JolokiaRequest, callback: (response: JolokiaSuccessResponse | JolokiaErrorResponse) => void) => {
       handle = await jolokiaService.register(request, callback)
       log.debug(selectedNode.name, '- Register request: handle =', handle)
     }
-    register({ type: 'read', mbean, attribute: ['HeapMemoryUsage', 'NonHeapMemoryUsage'] }, (response: Response) => {
+    register({ type: 'read', mbean, attribute: ['HeapMemoryUsage', 'NonHeapMemoryUsage'] }, (response: JolokiaSuccessResponse | JolokiaErrorResponse) => {
+      if (Jolokia.isError(response)) {
+        log.error(selectedNode.name, '- Scheduler - Error:', response)
+        return
+      }
       log.debug(selectedNode.name, '- Scheduler - Attributes:', response.value)
       const attrs = response.value as AttributeValues
       setAttributes(attrs)
@@ -189,7 +191,7 @@ const MemoryView: React.FunctionComponent = () => {
     return (
       <Card isPlain>
         <CardBody>
-          <Text component='p'>Reading attributes...</Text>
+          <Content component='p'>Reading attributes...</Content>
         </CardBody>
       </Card>
     )
@@ -303,7 +305,7 @@ const OSView: React.FunctionComponent = () => {
     readAttributes()
 
     let handle: number | null = null
-    const register = async (request: Request, callback: (response: Response) => void) => {
+    const register = async (request: JolokiaRequest, callback: (response: JolokiaSuccessResponse | JolokiaErrorResponse) => void) => {
       handle = await jolokiaService.register(request, callback)
       log.debug(selectedNode.name, '- Register request: handle =', handle)
     }
@@ -313,7 +315,11 @@ const OSView: React.FunctionComponent = () => {
         mbean,
         attribute: ['ProcessCpuLoad', 'SystemCpuLoad'],
       },
-      (response: Response) => {
+      (response: JolokiaSuccessResponse | JolokiaErrorResponse) => {
+        if (Jolokia.isError(response)) {
+          log.error(selectedNode.name, '- Scheduler - Error:', response)
+          return
+        }
         log.debug(selectedNode.name, '- Scheduler - Attributes:', response.value)
         const attrs = response.value as AttributeValues
         updateHistory(attrs)
@@ -444,7 +450,7 @@ const ThreadsView: React.FunctionComponent = () => {
     readAttributes()
 
     let handle: number | null = null
-    const register = async (request: Request, callback: (response: Response) => void) => {
+    const register = async (request: JolokiaRequest, callback: (response: JolokiaSuccessResponse | JolokiaErrorResponse) => void) => {
       handle = await jolokiaService.register(request, callback)
       log.debug(selectedNode.name, '- Register request: handle =', handle)
     }
@@ -454,7 +460,11 @@ const ThreadsView: React.FunctionComponent = () => {
         mbean,
         attribute: ['TotalStartedThreadCount', 'PeakThreadCount', 'ThreadCount', 'DaemonThreadCount'],
       },
-      (response: Response) => {
+      (response: JolokiaSuccessResponse | JolokiaErrorResponse) => {
+        if (Jolokia.isError(response)) {
+          log.error(selectedNode.name, '- Scheduler - Error:', response)
+          return
+        }
         log.debug(selectedNode.name, '- Scheduler - Attributes:', response.value)
         const attrs = response.value as AttributeValues
         updateHistory(attrs)
@@ -535,7 +545,7 @@ const ThreadsView: React.FunctionComponent = () => {
 const ReadingCard: React.FunctionComponent = () => (
   <Card isPlain>
     <CardBody>
-      <Text component='p'>Reading attributes...</Text>
+      <Content component='p'>Reading attributes...</Content>
     </CardBody>
   </Card>
 )
