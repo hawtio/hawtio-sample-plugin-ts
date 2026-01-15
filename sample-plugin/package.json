@@ -13,6 +13,9 @@
   },
   "dependencies": {
     "@hawtio/react": "^2.0.0",
+    "@langchain/core": "^0.3.76",
+    "@langchain/google-genai": "^0.2.18",
+    "@langchain/ollama": "^0.2.4",
     "@patternfly/react-charts": "^8.4.0",
     "@patternfly/react-code-editor": "^6.4.0",
     "@patternfly/react-core": "^6.4.0",
