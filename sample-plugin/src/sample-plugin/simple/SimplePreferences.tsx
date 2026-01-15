@@ -1,11 +1,11 @@
-import { CardBody, Text, TextContent } from '@patternfly/react-core'
+import { CardBody, Content } from '@patternfly/react-core'
 import React from 'react'
 
 export const SimplePreferences: React.FunctionComponent = () => (
   <CardBody>
-    <TextContent>
-      <Text component='h2'>Simple Plugin</Text>
-      <Text component='p'>Preferences view for Simple plugin.</Text>
-    </TextContent>
+    <Content>
+      <Content component='h2'>Simple Plugin</Content>
+      <Content component='p'>Preferences view for Simple plugin.</Content>
+    </Content>
   </CardBody>
 )

@@ -1,4 +1,4 @@
-import { CardBody, Form, FormGroup, FormSection, Text, TextInput } from '@patternfly/react-core'
+import { CardBody, Form, FormGroup, FormSection, Content, TextInput } from '@patternfly/react-core'
 import React, { useState } from 'react'
 import { preferencesService } from './preferences-service'
 
@@ -14,7 +14,7 @@ export const CustomTreePreferences: React.FunctionComponent = () => {
     <CardBody>
       <Form isHorizontal>
         <FormSection title='Custom Tree Plugin' titleElement='h2'>
-          <Text component='p'>Preferences view for Custom Tree plugin.</Text>
+          <Content component='p'>Preferences view for Custom Tree plugin.</Content>
           <FormGroup
             label='Domain'
             fieldId='custom-tree-prefs-form-domain'
