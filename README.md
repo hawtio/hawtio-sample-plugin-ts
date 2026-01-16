@@ -2,7 +2,7 @@
 
 [![Build](https://github.com/hawtio/hawtio-sample-plugin-ts/actions/workflows/build.yml/badge.svg)](https://github.com/hawtio/hawtio-sample-plugin-ts/actions/workflows/build.yml)
 
-This sample demonstrates how to write and use a custom plugin with [Hawtio v4](https://github.com/hawtio/hawtio) in a Spring Boot application.
+This sample demonstrates how to write and use a custom plugin with [Hawtio v5](https://github.com/hawtio/hawtio/tree/5.x) in a Spring Boot application.
 
 ## Key components
 
