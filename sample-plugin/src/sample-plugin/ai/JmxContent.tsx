@@ -1,15 +1,13 @@
 import { Chart, JmxContentMBeans, MBeanNode, Operations } from '@hawtio/react'
 import {
+  Content,
   Divider,
   EmptyState,
-  EmptyStateHeader,
-  EmptyStateIcon,
   Nav,
   NavItem,
   NavList,
   PageGroup,
   PageSection,
-  Text,
   Title
 } from '@patternfly/react-core'
 import { CubesIcon } from '@patternfly/react-icons/dist/esm/icons/cubes-icon'
@@ -26,10 +24,13 @@ export const JmxContent: React.FC = () => {
 
   if (!selectedNode) {
     return (
-      <PageSection variant='light' isFilled>
-        <EmptyState variant='full'>
-          <EmptyStateHeader titleText='Select MBean' icon={<EmptyStateIcon icon={CubesIcon} />} headingLevel='h1' />
-        </EmptyState>
+      <PageSection hasBodyWrapper={false} isFilled>
+        <EmptyState
+          headingLevel='h1'
+          icon={CubesIcon}
+          titleText='Select MBean'
+          variant='full'
+        />
       </PageSection>
     )
   }
@@ -59,7 +60,7 @@ export const JmxContent: React.FC = () => {
   const navItems = allNavItems.filter(nav => nav.isApplicable(selectedNode))
 
   const mbeanNav = (
-    <Nav aria-label='MBean Nav' variant='tertiary'>
+    <Nav aria-label='MBean Nav' variant="horizontal-subnav">
       <NavList>
         {navItems.map(nav => (
           <NavItem key={nav.id} isActive={pathname === `${pluginPath}/${nav.id}`}>
@@ -76,18 +77,17 @@ export const JmxContent: React.FC = () => {
 
   return (
     <PageGroup id='jmx-content'>
-      <PageSection id='jmx-content-header' variant='light'>
+      <PageSection hasBodyWrapper={false} id='jmx-content-header'>
         <Title headingLevel='h1'>{selectedNode.name}</Title>
-        <Text component='small'>{selectedNode.objectName}</Text>
+        <Content component='small'>{selectedNode.objectName}</Content>
       </PageSection>
       <Divider />
-      <PageSection type='tabs' variant='light' hasShadowBottom>
+      <PageSection hasBodyWrapper={false} type='tabs' hasShadowBottom>
         {mbeanNav}
       </PageSection>
-      <Divider />
       <PageSection
+        hasBodyWrapper={false}
         id='jmx-content-main'
-        variant='light'
         padding={{ default: 'noPadding' }}
         hasOverflowScroll
         aria-label='jmx-content-main'

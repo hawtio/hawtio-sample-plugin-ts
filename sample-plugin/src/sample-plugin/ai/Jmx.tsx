@@ -1,11 +1,7 @@
 import {
   EmptyState,
-  EmptyStateIcon,
-  EmptyStateVariant,
   PageSection,
-  PageSectionVariants,
   Spinner,
-  EmptyStateHeader,
 } from '@patternfly/react-core'
 import { CubesIcon } from '@patternfly/react-icons/dist/esm/icons/cubes-icon'
 import React from 'react'
@@ -20,7 +16,7 @@ export const Jmx: React.FunctionComponent = () => {
 
   if (!loaded) {
     return (
-      <PageSection>
+      <PageSection hasBodyWrapper={false}>
         <Spinner aria-label='Loading MBean tree' />
       </PageSection>
     )
@@ -28,10 +24,13 @@ export const Jmx: React.FunctionComponent = () => {
 
   if (tree.isEmpty()) {
     return (
-      <PageSection variant='light'>
-        <EmptyState variant='full'>
-          <EmptyStateHeader titleText='No MBeans found' icon={<EmptyStateIcon icon={CubesIcon} />} headingLevel='h1' />
-        </EmptyState>
+      <PageSection hasBodyWrapper={false}>
+        <EmptyState
+          headingLevel='h1'
+          icon={CubesIcon}
+          titleText='No MBeans found'
+          variant='full'
+        />
       </PageSection>
     )
   }
