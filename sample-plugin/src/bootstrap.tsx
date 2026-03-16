@@ -9,9 +9,9 @@ configManager.initItem('Loading UI', TaskState.started, 'config')
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(<HawtioInitialization verbose={true} />)
 
-import('@hawtio/react').then(async h => {
+import('@hawtio/react').then(async ({ hawtio, registerPlugins }) => {
   // Register builtin plugins 
-  h.registerPlugins()
+  registerPlugins()
 
   // Register the plugin under development
   plugin()
@@ -21,11 +21,11 @@ import('@hawtio/react').then(async h => {
   configManager.initItem('Loading UI', TaskState.finished, 'config')
 
   // Bootstrap Hawtio
-  h.hawtio.bootstrap().then(() => {
-    import('@hawtio/react/ui').then(ui => {
+  hawtio.bootstrap().then(() => {
+    import('@hawtio/react/ui').then(({ Hawtio }) => {
       root.render(
         <React.StrictMode>
-          <ui.Hawtio />
+          <Hawtio />
         </React.StrictMode>,
       )
     })
