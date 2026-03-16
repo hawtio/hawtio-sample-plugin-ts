@@ -3,11 +3,13 @@ name: Build
 on:
   pull_request_target:
     branches:
+      - hawtio-5.x
       - hawtio-4.x
     paths-ignore:
       - '**.md'
   push:
     branches:
+      - hawtio-5.x
       - hawtio-4.x
     paths-ignore:
       - '**.md'
