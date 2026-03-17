@@ -1299,18 +1299,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@module-federation/sdk@npm:0.22.1":
-  version: 0.22.1
-  resolution: "@module-federation/sdk@npm:0.22.1"
-  checksum: 10/7b742e502faca4c829d3e5be53b801b2dcb02381b9df70baca6cccba1ad303074834063d38900a39c0393746a292f37879997372cdd751cb99ff8588a70ca81e
+"@module-federation/sdk@npm:2.0.0":
+  version: 2.0.0
+  resolution: "@module-federation/sdk@npm:2.0.0"
+  checksum: 10/748d58797966cac8f820bf25803487a9b5317761af98bad1f3fc4756b80751b7b69145cc46590ce1afc1a12992a68bf29878f794fdcb99e48999187042486174
   languageName: node
   linkType: hard
 
-"@module-federation/utilities@npm:^3.1.77":
-  version: 3.1.79
-  resolution: "@module-federation/utilities@npm:3.1.79"
+"@module-federation/utilities@npm:3.1.83":
+  version: 3.1.83
+  resolution: "@module-federation/utilities@npm:3.1.83"
   dependencies:
-    "@module-federation/sdk": "npm:0.22.1"
+    "@module-federation/sdk": "npm:2.0.0"
   peerDependencies:
     react: ^16 || ^17 || ^18
     react-dom: ^16 || ^17 || ^18
@@ -1322,7 +1322,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10/84a88f36acd12b81ee85a867167a9f067c64707141641a8556a2f4cd90636caedf8493a5bd8e66b31363cb88dba1d5c6a5f3fb4f895bea7cc35296be2a42a937
+  checksum: 10/a12aa7161f290685db589c461d4137a5f9dba3d3cd239482fcfa723dda7ff120c389cd78a0d0bc0cf67e93b36f552a471939155f2a6022574abfe5493f6f78c7
   languageName: node
   linkType: hard
 

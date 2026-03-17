@@ -86,7 +86,7 @@ const CustomTreeContent: React.FunctionComponent = () => {
 
   if (!selectedNode) {
     return (
-      <PageSection hasBodyWrapper={false} variant='default' isFilled>
+      <PageSection hasBodyWrapper={false} isFilled>
         <EmptyState titleText={<Title headingLevel='h1' size='lg'>
           Select Node
         </Title>} variant='full' icon={CubesIcon} >
@@ -112,12 +112,12 @@ const CustomTreeContent: React.FunctionComponent = () => {
   return (
     <React.Fragment>
       <PageGroup>
-        <PageSection hasBodyWrapper={false} variant='default' className='custom-tree-content-header'>
+        <PageSection hasBodyWrapper={false} className='custom-tree-content-header'>
           <Title headingLevel='h1'>{selectedNode.name}</Title>
           <Content component='small'>{selectedNode.mbean}</Content>
         </PageSection>
       </PageGroup>
-      <PageSection hasBodyWrapper={false} variant='default' className='custom-tree-content-main'>
+      <PageSection hasBodyWrapper={false} className='custom-tree-content-main'>
         {customTreeContent}
       </PageSection>
     </React.Fragment>
